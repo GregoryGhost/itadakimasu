@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "GregoryGhost",
+  "classifications": [ "Web", "GrpcService", "Proto" ],
+  "identity": "GrpcService.Shared",
+  "name": "Grpc service template for shared proto files",
+  "shortName": "grpc-shared",
+  "sourceName": "GrpcService.Shared",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}

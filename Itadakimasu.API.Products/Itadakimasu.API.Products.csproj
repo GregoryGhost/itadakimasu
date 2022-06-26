@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>Nullable</WarningsAsErrors>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Itadakimasu.Products.Shared\Itadakimasu.Products.Shared.csproj" />
+    </ItemGroup>
+
+</Project>

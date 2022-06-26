@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "GregoryGhost",
+  "classifications": [ "NUnit", "GrpcService", "UnitTests"],
+  "identity": "GrpcService.Tests",
+  "name": "Grpc service template tests",
+  "shortName": "grpc-tests",
+  "sourceName": "GrpcService.Tests",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}

@@ -1,0 +1,27 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8e46e6f1_002D2e15_002D46f3_002D8340_002Dc026c94aa1f3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;API&amp;gt;\&amp;lt;Order&amp;gt;\&amp;lt;Itadakimasu.Order.Tests&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\kulak\RiderProjects\Itadakimasu\Itadakimasu\Itadakimasu.Products.Tests" Presentation="&amp;lt;API&amp;gt;\&amp;lt;Products&amp;gt;\&amp;lt;Itadakimasu.Products.Tests&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a880947b_002D341f_002D4361_002Dab1c_002D75ab7f4ccb47/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;API&amp;gt;\&amp;lt;Order&amp;gt;\&amp;lt;Itadakimasu.Order.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\kulak\RiderProjects\Itadakimasu\Itadakimasu\Itadakimasu.Order.Tests" Presentation="&amp;lt;API&amp;gt;\&amp;lt;Order&amp;gt;\&amp;lt;Itadakimasu.Order.Tests&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b9def349_002D9894_002D4f50_002D8b4f_002D5362c91a4d65/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;Templates&amp;gt;\&amp;lt;GrpcService.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\kulak\RiderProjects\Itadakimasu\Itadakimasu\GrpcService.Tests" Presentation="&amp;lt;Templates&amp;gt;\&amp;lt;GrpcService.Tests&amp;gt;" /&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Itadakimasu/@EntryIndexedValue">True</s:Boolean>
+	
+	
+	</wpf:ResourceDictionary>

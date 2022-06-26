@@ -1,0 +1,13 @@
+{
+  "$schema": "http://json.schemastore.org/template",
+  "author": "GregoryGhost",
+  "classifications": [ "Web", "GrpcService" ],
+  "identity": "GrpcService.Server",
+  "name": "Grpc service template",
+  "shortName": "grpc-service",
+  "sourceName": "GrpcService.Server",
+  "tags": {
+    "language": "C#",
+    "type": "project"
+  }
+}
