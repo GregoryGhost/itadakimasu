@@ -5,16 +5,16 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["GrpcService/GrpcService.csproj", "GrpcService/"]
-RUN dotnet restore "GrpcService/GrpcService.csproj"
+COPY ["Itadakimasu.API.Order/Itadakimasu.API.Order.csproj", "Itadakimasu.API.Order/"]
+RUN dotnet restore "Itadakimasu.API.Order/Itadakimasu.API.Order.csproj"
 COPY . .
-WORKDIR "/src/GrpcService"
-RUN dotnet build "GrpcService.csproj" -c Release -o /app/build
+WORKDIR "/src/Itadakimasu.API.Order"
+RUN dotnet build "Itadakimasu.API.Order.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "GrpcService.csproj" -c Release -o /app/publish
+RUN dotnet publish "Itadakimasu.API.Order.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "GrpcService.dll"]
+ENTRYPOINT ["dotnet", "Itadakimasu.API.Order.dll"]
