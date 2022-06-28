@@ -1,9 +1,12 @@
-using Greet.V1;
-using Itadakimasu.API.Products.Services;
-using Microsoft.Extensions.Logging;
-using Moq;
-
 namespace Itadakimasu.Products.Tests;
+
+using Greet.V1;
+
+using Itadakimasu.API.Products.Services;
+
+using Microsoft.Extensions.Logging;
+
+using Moq;
 
 public class Tests
 {

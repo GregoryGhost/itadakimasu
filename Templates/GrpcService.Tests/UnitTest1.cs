@@ -1,9 +1,12 @@
-using Greet.V1;
-using GrpcService.Server.Services;
-using Microsoft.Extensions.Logging;
-using Moq;
-
 namespace GrpcService.Tests;
+
+using Greet.V1;
+
+using GrpcService.Server.Services;
+
+using Microsoft.Extensions.Logging;
+
+using Moq;
 
 public class Tests
 {

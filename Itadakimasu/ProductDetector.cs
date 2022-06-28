@@ -1,7 +1,8 @@
-﻿using FuzzySharp;
-using IronOcr;
+﻿namespace Itadakimasu;
 
-namespace Itadakimasu;
+using FuzzySharp;
+
+using IronOcr;
 
 public class ProductDetector
 {
@@ -15,17 +16,13 @@ public class ProductDetector
     {
         var description = DetectProductDescription(imagePath);
         if (string.IsNullOrEmpty(description))
-        {
             return null;
-        }
 
         var products = possibleResults.Select(x => x.Name).ToArray();
         var foundStr = FuzzySearch(description, products);
         var checkedStr = description.Contains(foundStr);
         if (!checkedStr)
-        {
             return null;
-        }
 
         var foundProduct = possibleResults.First(x => x.Name == foundStr);
         var result = new FoundProductByImage

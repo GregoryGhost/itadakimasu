@@ -1,6 +1,6 @@
-using FluentAssertions;
-
 namespace Itadakimasu.Tests;
+
+using FluentAssertions;
 
 public class Tests
 {
@@ -52,9 +52,7 @@ public class Tests
     private static FoundProductByImage? GetExpectedProductByImage(int? productIndex)
     {
         if (productIndex is null)
-        {
             return null;
-        }
         var expectedProduct = Products[productIndex.Value];
         var expected = new FoundProductByImage
         {
