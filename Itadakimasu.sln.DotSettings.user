@@ -1,15 +1,24 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=8e46e6f1_002D2e15_002D46f3_002D8340_002Dc026c94aa1f3/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;API&amp;gt;\&amp;lt;Order&amp;gt;\&amp;lt;Itadakimasu.Order.Tests&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\kulak\RiderProjects\Itadakimasu\Itadakimasu\Itadakimasu.Products.Tests" Presentation="&amp;lt;API&amp;gt;\&amp;lt;Products&amp;gt;\&amp;lt;Itadakimasu.Products.Tests&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Program Files\dotnet\packs\Microsoft.AspNetCore.App.Ref\5.0.0\ref\net5.0\Microsoft.Extensions.Caching.Abstractions.dll" /&gt;&#xD;
+  &lt;Assembly Path="C:\Users\kulak\.nuget\packages\telegram.bot\17.0.0\lib\netcoreapp3.1\Telegram.Bot.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/DotNetCliExePath/@EntryValue">C:\Program Files\dotnet\dotnet.exe</s:String>
+	<s:Int64 x:Key="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue">1122</s:Int64>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=9BC4DD84CB4D2C4BAD9557002337A257/@KeyIndexDefined">True</s:Boolean>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=9BC4DD84CB4D2C4BAD9557002337A257/AbsolutePath/@EntryValue">C:\Users\kulak\RiderProjects\eggplant\Lagalike.sln.DotSettings</s:String>
+	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=9BC4DD84CB4D2C4BAD9557002337A257/RelativePath/@EntryValue">..\Lagalike.sln.DotSettings</s:String>
+	<s:Boolean x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File9BC4DD84CB4D2C4BAD9557002337A257/@KeyIndexDefined">True</s:Boolean>
+	<s:Double x:Key="/Default/Environment/InjectedLayers/InjectedLayerCustomization/=File9BC4DD84CB4D2C4BAD9557002337A257/RelativePriority/@EntryValue">1</s:Double>
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=5411d2d0_002De391_002D4244_002D8907_002Da6efeb5fe795/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;CustomPackages&amp;gt;\&amp;lt;DudesComparer&amp;gt;\&amp;lt;DudesComparer.Tests&amp;gt; #2" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\kulak\RiderProjects\eggplant\CustomPackages\DudesComparer.Tests" Presentation="&amp;lt;CustomPackages&amp;gt;\&amp;lt;DudesComparer&amp;gt;\&amp;lt;DudesComparer.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=a880947b_002D341f_002D4361_002Dab1c_002D75ab7f4ccb47/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;API&amp;gt;\&amp;lt;Order&amp;gt;\&amp;lt;Itadakimasu.Order.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\kulak\RiderProjects\Itadakimasu\Itadakimasu\Itadakimasu.Order.Tests" Presentation="&amp;lt;API&amp;gt;\&amp;lt;Order&amp;gt;\&amp;lt;Itadakimasu.Order.Tests&amp;gt;" /&gt;&#xD;
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=59d30b10_002Dceaa_002D44e7_002Da267_002D46e784e0233d/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="All tests from &amp;lt;CustomPackages&amp;gt;\&amp;lt;DudesComparer&amp;gt;\&amp;lt;DudesComparer.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Project Location="C:\Users\kulak\RiderProjects\eggplant\CustomPackages\DudesComparer.Tests" Presentation="&amp;lt;CustomPackages&amp;gt;\&amp;lt;DudesComparer&amp;gt;\&amp;lt;DudesComparer.Tests&amp;gt;" /&gt;&#xD;
 &lt;/SessionState&gt;</s:String>
-	
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=b9def349_002D9894_002D4f50_002D8b4f_002D5362c91a4d65/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="All tests from &amp;lt;Templates&amp;gt;\&amp;lt;GrpcService.Tests&amp;gt;" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;Project Location="C:\Users\kulak\RiderProjects\Itadakimasu\Itadakimasu\GrpcService.Tests" Presentation="&amp;lt;Templates&amp;gt;\&amp;lt;GrpcService.Tests&amp;gt;" /&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
-	
+	<s:String x:Key="/Default/Housekeeping/OptionsDialog/SelectedPageId/@EntryValue">SolutionBuilderGeneralOptionsPage</s:String>
+	<s:String x:Key="/Default/Profilers/Common/ConfigurationsStore/SelectedProfileConfigurationId/=Net/@EntryIndexedValue"></s:String>
+	<s:Boolean x:Key="/Default/Profilers/Common/ConfigurationsStore/SelectedProfileConfigurationId/=Net/@EntryIndexRemoved">True</s:Boolean>
 	
 	
 	
@@ -21,7 +30,55 @@
 	
 	
 	
-	<s:Boolean x:Key="/Default/UserDictionary/Words/=Itadakimasu/@EntryIndexedValue">True</s:Boolean>
 	
 	
-	</wpf:ResourceDictionary>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	<s:Boolean x:Key="/Default/UserDictionary/Words/=Lagalike/@EntryIndexedValue">True</s:Boolean></wpf:ResourceDictionary>
