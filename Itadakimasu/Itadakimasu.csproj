@@ -7,4 +7,10 @@
         <WarningsAsErrors>Nullable</WarningsAsErrors>
     </PropertyGroup>
 
+    <ItemGroup>
+        <PackageReference Include="FuzzySharp" Version="2.0.2" />
+        <PackageReference Include="IronOcr" Version="2022.3.0" />
+        <PackageReference Include="IronOcr.Languages.Russian" Version="2020.11.2" />
+    </ItemGroup>
+
 </Project>

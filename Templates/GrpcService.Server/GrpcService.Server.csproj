@@ -9,12 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
-        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0"/>
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\GrpcService.Shared\GrpcService.Shared.csproj" />
+        <ProjectReference Include="..\GrpcService.Shared\GrpcService.Shared.csproj"/>
     </ItemGroup>
 
 </Project>

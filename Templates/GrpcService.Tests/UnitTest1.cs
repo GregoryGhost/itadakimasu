@@ -23,7 +23,7 @@ public class Tests
         {
             Name = "testName"
         };
-        
+
         //Act
         var actual = await greeterService.SayHello(msg, TestServerCallContext.Create());
 
