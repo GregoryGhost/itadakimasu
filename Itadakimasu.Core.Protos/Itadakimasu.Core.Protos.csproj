@@ -15,13 +15,4 @@
         <PackageReference Include="Grpc.AspNetCore" Version="2.46.0"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <Compile Include="..\Itadakimasu.Core.Protos\DecimalValue.cs">
-            <Link>DecimalValue.cs</Link>
-        </Compile>
-    </ItemGroup>
-
-    <PropertyGroup>
-        <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    </PropertyGroup>
 </Project>

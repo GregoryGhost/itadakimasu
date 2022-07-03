@@ -1,4 +1,7 @@
 using Itadakimasu.API.Products.Services;
+using Itadakimasu.Products.DAL;
+
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,10 +12,16 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddDbContext<AppDbContext>(
+    optionsBuilder => optionsBuilder.UseNpgsql(
+        connectionString,
+        b => b.MigrationsAssembly("Itadakimasu.Products.Migrations")));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.MapGrpcService<GreeterService>();
+app.MapGrpcService<MerchandiserService>();
 app.MapGet(
     "/",
     () =>

@@ -1,25 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
         <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <WarningsAsErrors>Nullable</WarningsAsErrors>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
-        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+        <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="6.0.5" />
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Itadakimasu.Products.DAL\Itadakimasu.Products.DAL.csproj" />
-        <ProjectReference Include="..\Itadakimasu.Products.Shared\Itadakimasu.Products.Shared.csproj" />
+        <ProjectReference Include="..\Itadakimasu.Core.DAL\Itadakimasu.Core.DAL.csproj" />
     </ItemGroup>
 
 </Project>

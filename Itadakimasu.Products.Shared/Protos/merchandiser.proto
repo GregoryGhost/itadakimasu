@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package merchandiser.v1;
+
+import "Protos/custom_types.proto";
+import "google/protobuf/struct.proto";
+
+// The greeting service definition.
+service Merchandiser {
+  // Sends a product by id.
+  rpc GetProduct (ProductId) returns (FoundProductDto);
+}
+
+// The request message containing a product id.
+message ProductId {
+  fixed64 id = 1;
+}
+
+// The response message containing a product info.
+message ProductDto {
+  fixed64 id = 1;
+  string name = 2;
+  CustomTypes.DecimalValue price = 3;
+}
+
+message FoundProductDto {
+  oneof kind {
+    google.protobuf.NullValue null = 1;
+    ProductDto product = 2;
+  }
+}
