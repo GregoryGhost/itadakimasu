@@ -10,6 +10,8 @@ using Merchandiser.V1;
 
 using Microsoft.EntityFrameworkCore;
 
+using PaginationOptions;
+
 public class MerchandiserService : Merchandiser.MerchandiserBase
 {
     private readonly AppDbContext _dbContext;
@@ -20,6 +22,45 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     {
         _logger = logger;
         _dbContext = dbContext;
+    }
+
+    /// <inheritdoc />
+    public override async Task<ProductDto> CreateProduct(NewProductDto request, ServerCallContext context)
+    {
+        var isValidProduct = IsValidProduct(request, context);
+        if (!isValidProduct)
+            return null!;
+
+        var newProduct = MapEntity(request);
+        _dbContext.Products.Add(newProduct);
+        await _dbContext.SaveChangesAsync();
+
+        var createdProduct = MapDto(newProduct).Product;
+
+        return createdProduct;
+    }
+
+    /// <inheritdoc />
+    public override async Task<Empty> DeleteProduct(ProductId request, ServerCallContext context)
+    {
+        if (request.Id == 0)
+        {
+            context.Status = new Status(StatusCode.FailedPrecondition, "A product id must be above zero.");
+
+            return null!;
+        }
+
+        var foundProduct = await _dbContext.Products.FindAsync(request.Id);
+        if (foundProduct is null)
+        {
+            context.Status = new Status(StatusCode.NotFound, $"A product by id {request.Id} was not found.");
+
+            return null!;
+        }
+
+        _dbContext.Products.Remove(foundProduct);
+
+        return new Empty();
     }
 
     /// <inheritdoc />
@@ -37,6 +78,94 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
         return mapped;
     }
 
+    /// <inheritdoc />
+    public override async Task<PaginatedProducts> ListProducts(ProductsPagination request, ServerCallContext context)
+    {
+        var pageSize = (int)request.Pagination.PageSize;
+        var currentPage = (int)request.Pagination.CurrentPage;
+        var list = await _dbContext.Products
+                             .Skip(currentPage)
+                             .Take(pageSize)
+                             .Select(x => MapDto(x).Product)
+                             .ToListAsync();
+        var totalItemsLength = (uint)await _dbContext.Products.CountAsync();
+        var paginatedProducts = new PaginatedProducts
+        {
+            PageInfo = new PageInfo
+            {
+                Page = request.Pagination.CurrentPage,
+                PageSize = request.Pagination.PageSize,
+                TotalItems = totalItemsLength
+            },
+            Products = { list }
+        };
+
+        return paginatedProducts;
+    }
+
+    /// <inheritdoc />
+    public override async Task<ProductDto> UpdateProduct(ProductDto request, ServerCallContext context)
+    {
+        var isValidProduct = IsValidProduct(request, context);
+        if (!isValidProduct)
+            return null!;
+
+        var foundProduct = await FindProductAsync(request, context);
+        if (foundProduct is null)
+            return null!;
+
+        foundProduct.Name = request.Name;
+        foundProduct.Price = request.Price;
+
+        await _dbContext.SaveChangesAsync();
+
+        var updated = MapDto(foundProduct).Product;
+
+        return updated;
+    }
+
+    private async Task<Product?> FindProductAsync(ProductDto request, ServerCallContext context)
+    {
+        var foundProduct = await _dbContext.Products.FindAsync(request.Id);
+        if (foundProduct is not null)
+            return foundProduct;
+
+        context.Status = new Status(StatusCode.NotFound, $"A product by id {request.Id} was not found.");
+
+        return null;
+    }
+
+    private static bool IsValidProduct(NewProductDto request, ServerCallContext context)
+    {
+        if (string.IsNullOrWhiteSpace(request.Name))
+        {
+            context.Status = new Status(StatusCode.FailedPrecondition, "Product name must have a name, but got an empty name.");
+
+            return false;
+        }
+
+        if (request.Price <= 0)
+        {
+            context.Status = new Status(StatusCode.FailedPrecondition, "Product price must be above zero.");
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private static bool IsValidProduct(ProductDto request, ServerCallContext context)
+    {
+        var likeNewProduct = new NewProductDto
+        {
+            Name = request.Name,
+            Price = request.Price
+        };
+        var isValid = IsValidProduct(likeNewProduct, context);
+
+        return isValid;
+    }
+
     private static FoundProductDto MapDto(Product product)
     {
         var dto = new ProductDto
@@ -49,6 +178,16 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
         return new FoundProductDto
         {
             Product = dto
+        };
+    }
+
+    private static Product MapEntity(NewProductDto newProductDto)
+    {
+        return new Product
+        {
+            Id = 0,
+            Name = newProductDto.Name,
+            Price = newProductDto.Price
         };
     }
 }

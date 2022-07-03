@@ -2,27 +2,72 @@ syntax = "proto3";
 
 package merchandiser.v1;
 
-import "Protos/custom_types.proto";
 import "google/protobuf/struct.proto";
+import "google/protobuf/empty.proto";
+import "Protos/pagination_options.proto";
+import "Protos/custom_types.proto";
 
-// The greeting service definition.
+// The products service definition.
 service Merchandiser {
-  // Sends a product by id.
+  // Create a new product.
+  rpc CreateProduct (NewProductDto) returns (ProductDto);
+  
+  // Delete a product by id.
+  rpc DeleteProduct (ProductId) returns (google.protobuf.Empty);
+  
+  // Update a product.
+  rpc UpdateProduct (ProductDto) returns (ProductDto);
+  
+  // Get a product by id.
   rpc GetProduct (ProductId) returns (FoundProductDto);
+  
+  // Get paginated products by pagination options.
+  rpc ListProducts (ProductsPagination) returns (PaginatedProducts);
+}
+
+// Pagination info for a products.
+message ProductsPagination {
+  // Pagination info.
+  PaginationOptions.Pagination pagination = 1;
+}
+
+// Paginated product.
+message PaginatedProducts {
+  // The collection of products.
+  repeated ProductDto products = 1;
+  
+  // A page products info.
+  PaginationOptions.PageInfo page_info = 2;
 }
 
 // The request message containing a product id.
 message ProductId {
+  // Product id.
   fixed64 id = 1;
 }
 
-// The response message containing a product info.
-message ProductDto {
-  fixed64 id = 1;
+// A new product.
+message NewProductDto {
+  // Product name.
   string name = 2;
+  
+  // Product price.
   CustomTypes.DecimalValue price = 3;
 }
 
+// A product info.
+message ProductDto {
+  // Product id.
+  fixed64 id = 1;
+  
+  // Product name.
+  string name = 2;
+  
+  // Product price.
+  CustomTypes.DecimalValue price = 3;
+}
+
+// The response message to get a product by id.
 message FoundProductDto {
   oneof kind {
     google.protobuf.NullValue null = 1;
