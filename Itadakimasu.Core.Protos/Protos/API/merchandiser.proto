@@ -4,8 +4,8 @@ package merchandiser.v1;
 
 import "google/protobuf/struct.proto";
 import "google/protobuf/empty.proto";
-import "Protos/pagination_options.proto";
-import "Protos/custom_types.proto";
+import "Protos/Common/pagination_options.proto";
+import "Protos/Common/custom_types.proto";
 
 // The products service definition.
 service Merchandiser {

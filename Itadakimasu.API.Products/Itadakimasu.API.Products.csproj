@@ -20,7 +20,6 @@
     <ItemGroup>
         <ProjectReference Include="..\Itadakimasu.Products.DAL\Itadakimasu.Products.DAL.csproj" />
         <ProjectReference Include="..\Itadakimasu.Products.Migrations\Itadakimasu.Products.Migrations.csproj" />
-        <ProjectReference Include="..\Itadakimasu.Products.Shared\Itadakimasu.Products.Shared.csproj" />
     </ItemGroup>
 
 </Project>

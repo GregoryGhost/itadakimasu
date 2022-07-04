@@ -4,6 +4,7 @@ using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
 
+using Itadakimasu.Core.DAL;
 using Itadakimasu.Products.DAL;
 
 using Merchandiser.V1;
@@ -81,22 +82,14 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     /// <inheritdoc />
     public override async Task<PaginatedProducts> ListProducts(ProductsPagination request, ServerCallContext context)
     {
-        var pageSize = (int)request.Pagination.PageSize;
-        var currentPage = (int)request.Pagination.CurrentPage;
         var list = await _dbContext.Products
-                             .Skip(currentPage)
-                             .Take(pageSize)
-                             .Select(x => MapDto(x).Product)
-                             .ToListAsync();
-        var totalItemsLength = (uint)await _dbContext.Products.CountAsync();
+                                   .Paginate(request.Pagination)
+                                   .Select(x => MapDto(x).Product)
+                                   .ToListAsync();
+        var pageInfo = await _dbContext.Products.ToPaginatedAsync(request.Pagination);
         var paginatedProducts = new PaginatedProducts
         {
-            PageInfo = new PageInfo
-            {
-                Page = request.Pagination.CurrentPage,
-                PageSize = request.Pagination.PageSize,
-                TotalItems = totalItemsLength
-            },
+            PageInfo = pageInfo,
             Products = { list }
         };
 
