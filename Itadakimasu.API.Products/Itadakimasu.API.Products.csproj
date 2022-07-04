@@ -9,17 +9,17 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
-        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0"/>
+        <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
-          <PrivateAssets>all</PrivateAssets>
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Itadakimasu.Products.DAL\Itadakimasu.Products.DAL.csproj" />
-        <ProjectReference Include="..\Itadakimasu.Products.Migrations\Itadakimasu.Products.Migrations.csproj" />
+        <ProjectReference Include="..\Itadakimasu.Products.DAL\Itadakimasu.Products.DAL.csproj"/>
+        <ProjectReference Include="..\Itadakimasu.Products.Migrations\Itadakimasu.Products.Migrations.csproj"/>
     </ItemGroup>
 
 </Project>

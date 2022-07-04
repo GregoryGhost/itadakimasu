@@ -14,15 +14,15 @@ using Moq;
 
 public class Tests
 {
-    private readonly MerchandiserService _merchandiserService;
-
     private readonly AppDbContext _inMemoryDb;
+
+    private readonly MerchandiserService _merchandiserService;
 
     public Tests()
     {
         var mockLogger = new Mock<ILogger<MerchandiserService>>();
         var options = new DbContextOptionsBuilder<AppDbContext>()
-                      .UseInMemoryDatabase(databaseName: "Test")
+                      .UseInMemoryDatabase("Test")
                       .Options;
         _inMemoryDb = new AppDbContext(options);
         _merchandiserService = new MerchandiserService(mockLogger.Object, _inMemoryDb);
@@ -34,28 +34,6 @@ public class Tests
         _inMemoryDb.Database.EnsureDeleted();
     }
 
-    [Test]
-    public async Task TestIntegrationAsync()
-    {
-        //Arrange
-        var msg = new ProductId
-        {
-            Id = 1
-        };
-
-        //Act
-        var actual = await _merchandiserService.GetProduct(msg, TestServerCallContext.Create());
-
-        //Assert
-        var expected = new FoundProductDto
-        {
-            Null = NullValue.NullValue,
-            Product = null
-        };
-
-        Assert.That(actual, Is.EqualTo(expected));
-    }
-    
     [Test]
     public async Task TestGetProductByIdAsync()
     {
@@ -86,6 +64,28 @@ public class Tests
                 Name = actualProduct.Name,
                 Price = actualProduct.Price
             }
+        };
+
+        Assert.That(actual, Is.EqualTo(expected));
+    }
+
+    [Test]
+    public async Task TestIntegrationAsync()
+    {
+        //Arrange
+        var msg = new ProductId
+        {
+            Id = 1
+        };
+
+        //Act
+        var actual = await _merchandiserService.GetProduct(msg, TestServerCallContext.Create());
+
+        //Assert
+        var expected = new FoundProductDto
+        {
+            Null = NullValue.NullValue,
+            Product = null
         };
 
         Assert.That(actual, Is.EqualTo(expected));

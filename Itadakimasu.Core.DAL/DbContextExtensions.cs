@@ -8,18 +8,18 @@ public static class DbContextExtensions
 {
     public static IQueryable<TEntity> Paginate<TEntity>(this IQueryable<TEntity> query, Pagination pagination)
     {
-        var currentPage = (int)pagination.CurrentPage;
-        var pageSize = (int)pagination.PageSize;
+        var currentPage = (int) pagination.CurrentPage;
+        var pageSize = (int) pagination.PageSize;
         var paginated = query.Skip(currentPage)
-            .Take(pageSize);
+                             .Take(pageSize);
 
         return paginated;
     }
 
     public static async Task<PageInfo> ToPaginatedAsync<TEntity>(this DbSet<TEntity> dbSet, Pagination pagination)
-        where TEntity: class
+        where TEntity : class
     {
-        var totalItemsLength = (uint)await dbSet.CountAsync();
+        var totalItemsLength = (uint) await dbSet.CountAsync();
         var pageInfo = new PageInfo
         {
             Page = pagination.CurrentPage,

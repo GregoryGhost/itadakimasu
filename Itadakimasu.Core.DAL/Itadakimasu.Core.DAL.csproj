@@ -7,11 +7,11 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Itadakimasu.Core.Protos\Itadakimasu.Core.Protos.csproj" />
+        <ProjectReference Include="..\Itadakimasu.Core.Protos\Itadakimasu.Core.Protos.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.5"/>
     </ItemGroup>
 
 </Project>

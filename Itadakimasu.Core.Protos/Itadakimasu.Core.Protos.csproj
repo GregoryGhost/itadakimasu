@@ -1,38 +1,38 @@
 <Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <WarningsAsErrors>Nullable</WarningsAsErrors>
-  </PropertyGroup>
-  <ItemGroup>
-    <Protobuf Include="Protos\*.proto" GrpcServices="Both" />
-    <Protobuf Include="Protos\API\merchandiser.proto">
-      <GrpcServices>Both</GrpcServices>
-      <Access>Public</Access>
-      <ProtoCompile>True</ProtoCompile>
-      <CompileOutputs>True</CompileOutputs>
-      <OutputDir>obj\Debug\net6.0\</OutputDir>
-      <Generator>MSBuild:Compile</Generator>
-    </Protobuf>
-    <Protobuf Include="Protos\Common\custom_types.proto">
-      <GrpcServices>Both</GrpcServices>
-      <Access>Public</Access>
-      <ProtoCompile>True</ProtoCompile>
-      <CompileOutputs>True</CompileOutputs>
-      <OutputDir>obj\Debug\net6.0\</OutputDir>
-      <Generator>MSBuild:Compile</Generator>
-    </Protobuf>
-    <Protobuf Include="Protos\Common\pagination_options.proto">
-      <GrpcServices>Both</GrpcServices>
-      <Access>Public</Access>
-      <ProtoCompile>True</ProtoCompile>
-      <CompileOutputs>True</CompileOutputs>
-      <OutputDir>obj\Debug\net6.0\</OutputDir>
-      <Generator>MSBuild:Compile</Generator>
-    </Protobuf>
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
-  </ItemGroup>
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <WarningsAsErrors>Nullable</WarningsAsErrors>
+    </PropertyGroup>
+    <ItemGroup>
+        <Protobuf Include="Protos\*.proto" GrpcServices="Both"/>
+        <Protobuf Include="Protos\API\merchandiser.proto">
+            <GrpcServices>Both</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>obj\Debug\net6.0\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protos\Common\custom_types.proto">
+            <GrpcServices>Both</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>obj\Debug\net6.0\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+        <Protobuf Include="Protos\Common\pagination_options.proto">
+            <GrpcServices>Both</GrpcServices>
+            <Access>Public</Access>
+            <ProtoCompile>True</ProtoCompile>
+            <CompileOutputs>True</CompileOutputs>
+            <OutputDir>obj\Debug\net6.0\</OutputDir>
+            <Generator>MSBuild:Compile</Generator>
+        </Protobuf>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0"/>
+    </ItemGroup>
 </Project>

@@ -11,8 +11,6 @@ using Merchandiser.V1;
 
 using Microsoft.EntityFrameworkCore;
 
-using PaginationOptions;
-
 public class MerchandiserService : Merchandiser.MerchandiserBase
 {
     private readonly AppDbContext _dbContext;
@@ -90,7 +88,7 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
         var paginatedProducts = new PaginatedProducts
         {
             PageInfo = pageInfo,
-            Products = { list }
+            Products = {list}
         };
 
         return paginatedProducts;
