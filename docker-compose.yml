@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=mysecretpassword
+      - POSTGRES_DB=itadakimasu
+    ports:
+      - "15432:5432"
+    volumes:
+      - "postgresql-data:/var/lib/postgresql/data"
+    networks:
+      - api-network
+
+  api_droducts:
+    depends_on:
+      - postgres
+    build: 
+      context: .
+      dockerfile: Dockerfile.products
+    ports:
+      - "7220:7221"
+    networks:
+      - api-network
+
+volumes:
+  postgresql-data:
+
+networks:
+  api-network:
+    driver: bridge
