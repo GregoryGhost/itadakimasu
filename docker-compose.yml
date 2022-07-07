@@ -1,28 +1,44 @@
 version: '3'
 
 services:
+  api_gateway:
+    depends_on:
+      - api_products
+    build:
+      context: .
+      dockerfile: Dockerfile.gateway
+    environment:
+      MERCHANDISER_ADDRESS: "http://api_products:5220"
+    ports:
+      - "5243:80"
+    networks:
+      - api-network
+
+  api_products:
+    depends_on:
+      - db
+    build: 
+      context: .
+      dockerfile: Dockerfile.products
+    environment:
+      DB_CONNECTION_STRING: "Username=postgres;Password=mysecretpassword;host=db;Port=5432;Database=products;Integrated Security=true;Pooling=true;"
+    ports:
+      - "5220:80"
+    networks:
+      - api-network
+
   db:
     image: postgres:latest
     restart: always
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
-      - POSTGRES_DB=itadakimasu
+      - POSTGRES_DB=postgres
     ports:
-      - "15432:5432"
+      - "5432:5432"
     volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
       - "postgresql-data:/var/lib/postgresql/data"
-    networks:
-      - api-network
-
-  api_droducts:
-    depends_on:
-      - postgres
-    build: 
-      context: .
-      dockerfile: Dockerfile.products
-    ports:
-      - "7220:7221"
     networks:
       - api-network
 

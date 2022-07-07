@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Google.Protobuf" Version="3.21.2" />
+      <PackageReference Include="Grpc.Net.Client" Version="2.47.0" />
+      <PackageReference Include="Grpc.Tools" Version="2.47.0">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+      <PackageReference Include="HotChocolate.AspNetCore" Version="12.12.0" />
+      <PackageReference Include="HotChocolate.Types.Scalars" Version="12.12.0" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Itadakimasu.Core.Protos\Itadakimasu.Core.Protos.csproj" />
+    </ItemGroup>
+
+</Project>

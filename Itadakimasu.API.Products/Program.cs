@@ -12,7 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+if (string.IsNullOrEmpty(connectionString))
+{
+    throw new ApplicationException("You should provide connection string to database.");
+}
 builder.Services.AddDbContext<AppDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(
         connectionString,
@@ -30,5 +34,9 @@ app.MapGet(
 var env = app.Environment;
 if (env.IsDevelopment())
     app.MapGrpcReflectionService();
+
+using var scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+db.Database.Migrate();
 
 app.Run();
