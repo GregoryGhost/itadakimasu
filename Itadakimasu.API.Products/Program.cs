@@ -2,6 +2,7 @@ using Itadakimasu.API.Products.Services;
 using Itadakimasu.Products.DAL;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
+builder.Services.AddGrpcHealthChecks();
+
 
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 if (string.IsNullOrEmpty(connectionString))
@@ -21,11 +24,13 @@ builder.Services.AddDbContext<AppDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(
         connectionString,
         b => b.MigrationsAssembly("Itadakimasu.Products.Migrations")));
+builder.Services.AddHealthChecks().AddDbContextCheck<AppDbContext>();
 
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<MerchandiserService>();
+app.MapGrpcHealthChecksService();
 app.MapGet(
     "/",
     () =>
