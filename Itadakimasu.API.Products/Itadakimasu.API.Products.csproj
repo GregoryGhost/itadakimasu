@@ -12,6 +12,7 @@
         <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
         <PackageReference Include="Grpc.AspNetCore.HealthChecks" Version="2.47.0" />
         <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.46.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.5">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>

@@ -1,4 +1,4 @@
-using Itadakimasu.API.Gateway;
+using Itadakimasu.API.Gateway.APIs.Products;
 
 using Merchandiser.V1;
 
@@ -6,7 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
        .AddGraphQLServer()
-       .AddQueryType<Query>();
+       .AddQueryType<ProductsQuery>()
+       .AddMutationType<ProductsMutation>();
 
 builder.Services.AddGrpcClient<Merchandiser.V1.Merchandiser.MerchandiserClient>(
        options =>
