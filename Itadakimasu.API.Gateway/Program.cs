@@ -1,7 +1,5 @@
 using Itadakimasu.API.Gateway.APIs.Products;
 
-using Merchandiser.V1;
-
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
@@ -10,20 +8,16 @@ builder.Services
        .AddMutationType<ProductsMutation>();
 
 builder.Services.AddGrpcClient<Merchandiser.V1.Merchandiser.MerchandiserClient>(
-       options =>
-       {
-              var merchandiserAddress = Environment.GetEnvironmentVariable("MERCHANDISER_ADDRESS");
-              if (string.IsNullOrWhiteSpace(merchandiserAddress))
-              {
-                     throw new Exception("You must provide correct merchandiser address.");
-              }
-              
-              options.Address = new Uri(merchandiserAddress);
-       }).ConfigureChannel(
-       options =>
-       {
-              options.UnsafeUseInsecureChannelCallCredentials = true;
-       });
+           options =>
+           {
+               var merchandiserAddress = Environment.GetEnvironmentVariable("MERCHANDISER_ADDRESS");
+               if (string.IsNullOrWhiteSpace(merchandiserAddress))
+                   throw new Exception("You must provide correct merchandiser address.");
+
+               options.Address = new Uri(merchandiserAddress);
+           })
+       .ConfigureChannel(
+           options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
 
 var app = builder.Build();
 

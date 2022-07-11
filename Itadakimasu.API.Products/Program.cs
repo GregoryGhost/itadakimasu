@@ -3,7 +3,6 @@ using Itadakimasu.Products.DAL;
 
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,12 +14,9 @@ builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 builder.Services.AddGrpcHealthChecks();
 
-
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
 if (string.IsNullOrEmpty(connectionString))
-{
     throw new ApplicationException("You should provide connection string to database.");
-}
 builder.Services.AddDbContext<AppDbContext>(
     optionsBuilder => optionsBuilder.UseNpgsql(
         connectionString,

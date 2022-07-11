@@ -5,15 +5,15 @@ using JetBrains.Annotations;
 using Merchandiser.V1;
 
 /// <summary>
-/// API products mutation.
+///     API products mutation.
 /// </summary>
 [PublicAPI]
 public class ProductsMutation
 {
     private readonly Merchandiser.MerchandiserClient _merchandiser;
-    
+
     /// <summary>
-    /// Initialize dependencies.
+    ///     Initialize dependencies.
     /// </summary>
     /// <param name="merchandiser">API products service.</param>
     public ProductsMutation(Merchandiser.MerchandiserClient merchandiser)
@@ -22,7 +22,7 @@ public class ProductsMutation
     }
 
     /// <summary>
-    /// Create a new product.
+    ///     Create a new product.
     /// </summary>
     /// <param name="dto">A new product info.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
@@ -37,7 +37,22 @@ public class ProductsMutation
     }
 
     /// <summary>
-    /// Update a product.
+    ///     Delete a product.
+    /// </summary>
+    /// <param name="dto">Deleting product.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns deleted product.</returns>
+    public async Task<DeletedProduct> DeleteProduct(DeletingProduct dto, CancellationToken cancellationToken)
+    {
+        var request = ToDeleteProduct(dto);
+        var response = await _merchandiser.DeleteProductAsync(request, cancellationToken: cancellationToken);
+        var deletedProduct = ToDeletedProduct(dto);
+
+        return deletedProduct;
+    }
+
+    /// <summary>
+    ///     Update a product.
     /// </summary>
     /// <param name="dto">Updating product.</param>
     /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
@@ -51,19 +66,23 @@ public class ProductsMutation
         return updatedProduct;
     }
 
-    /// <summary>
-    /// Delete a product.
-    /// </summary>
-    /// <param name="dto">Deleting product.</param>
-    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-    /// <returns>Returns deleted product.</returns>
-    public async Task<DeletedProduct> DeleteProduct(DeletingProduct dto, CancellationToken cancellationToken)
+    private static CreatedProductDto ToCreatedProduct(ProductDto created)
     {
-        var request = ToDeleteProduct(dto);
-        var response = await _merchandiser.DeleteProductAsync(request, cancellationToken: cancellationToken);
-        var deletedProduct = ToDeletedProduct(dto);
+        return new CreatedProductDto
+        {
+            Id = created.Id,
+            Name = created.Name,
+            Price = created.Price
+        };
+    }
 
-        return deletedProduct;
+    private static NewProductDto ToCreateProduct(CreatingProductDto dto)
+    {
+        return new NewProductDto
+        {
+            Name = dto.Name,
+            Price = dto.Price
+        };
     }
 
     private static DeletedProduct ToDeletedProduct(ProductInfoId dto)
@@ -82,16 +101,6 @@ public class ProductsMutation
         };
     }
 
-    private static ProductDto ToUpdateProduct(UpdatingProduct dto)
-    {
-        return new ProductDto
-        {
-            Id = dto.Id,
-            Name = dto.Name,
-            Price = dto.Price
-        };
-    }
-
     private static UpdatedProduct ToUpdatedProduct(ProductDto updated)
     {
         return new UpdatedProduct
@@ -102,33 +111,28 @@ public class ProductsMutation
         };
     }
 
-    private static NewProductDto ToCreateProduct(CreatingProductDto dto)
+    private static ProductDto ToUpdateProduct(UpdatingProduct dto)
     {
-        return new NewProductDto
+        return new ProductDto
         {
+            Id = dto.Id,
             Name = dto.Name,
             Price = dto.Price
         };
     }
-
-    private static CreatedProductDto ToCreatedProduct(ProductDto created)
-    {
-        return new CreatedProductDto
-        {
-            Id = created.Id,
-            Name = created.Name,
-            Price = created.Price
-        };
-    }
 }
 
-public record DeletingProduct: ProductInfoId {}
-
-public record DeletedProduct: ProductInfoId
+public record DeletingProduct : ProductInfoId
 {
 }
 
-public record UpdatedProduct : UpdatingProduct {}
+public record DeletedProduct : ProductInfoId
+{
+}
+
+public record UpdatedProduct : UpdatingProduct
+{
+}
 
 public record UpdatingProduct
 {
@@ -137,14 +141,14 @@ public record UpdatingProduct
     public ulong Id { get; init; }
 
     public string Name { get; init; } = null!;
-    
+
     public decimal Price { get; init; }
 }
 
 public record CreatingProductDto
 {
     public string Name { get; init; } = null!;
-    
+
     public decimal Price { get; init; }
 }
 
@@ -155,6 +159,6 @@ public record CreatedProductDto
     public ulong Id { get; init; }
 
     public string Name { get; init; } = null!;
-    
+
     public decimal Price { get; init; }
 }
