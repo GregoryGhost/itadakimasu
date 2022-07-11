@@ -31,7 +31,7 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
             return null!;
 
         var newProduct = MapEntity(request);
-        _dbContext.Products.Add(newProduct);
+        await _dbContext.Products.AddAsync(newProduct);
         await _dbContext.SaveChangesAsync();
 
         var createdProduct = MapDto(newProduct).Product;
@@ -65,7 +65,7 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     /// <inheritdoc />
     public override async Task<FoundProductDto> GetProduct(ProductId request, ServerCallContext context)
     {
-        var foundProduct = await _dbContext.Products.SingleOrDefaultAsync(x => x.Id == request.Id);
+        var foundProduct = await _dbContext.Products.SingleOrDefaultAsync(x => x.Id == (long)request.Id);
         if (foundProduct is null)
             return new FoundProductDto
             {
@@ -161,7 +161,7 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     {
         var dto = new ProductDto
         {
-            Id = product.Id,
+            Id = (ulong)product.Id,
             Name = product.Name,
             Price = product.Price
         };
@@ -176,7 +176,6 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     {
         return new Product
         {
-            Id = 0,
             Name = newProductDto.Name,
             Price = newProductDto.Price
         };

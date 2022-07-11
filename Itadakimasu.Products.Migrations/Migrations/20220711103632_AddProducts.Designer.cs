@@ -11,7 +11,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Itadakimasu.Products.Migrations.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20220703093411_AddProducts")]
+    [Migration("20220711103632_AddProducts")]
     partial class AddProducts
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,9 +25,11 @@ namespace Itadakimasu.Products.Migrations.Migrations
 
             modelBuilder.Entity("Itadakimasu.Products.DAL.Product", b =>
                 {
-                    b.Property<decimal>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("numeric(20,0)");
+                        .HasColumnType("bigint");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
 
                     b.Property<string>("Name")
                         .IsRequired()

@@ -60,7 +60,7 @@ public class Tests
         {
             Product = new ProductDto
             {
-                Id = actualProduct.Id,
+                Id = (ulong)actualProduct.Id,
                 Name = actualProduct.Name,
                 Price = actualProduct.Price
             }
