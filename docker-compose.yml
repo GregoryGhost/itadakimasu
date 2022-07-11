@@ -3,12 +3,14 @@ version: '3'
 services:
   api_gateway:
     depends_on:
-      - api_products
+      # api_products:
+      db:
+        condition: service_healthy
     build:
       context: .
       dockerfile: Dockerfile.gateway
     environment:
-      MERCHANDISER_ADDRESS: "http://api_products:5220"
+      MERCHANDISER_ADDRESS: "http://api_products:80"
     ports:
       - "5243:80"
     networks:
@@ -16,24 +18,45 @@ services:
 
   api_products:
     depends_on:
-      - db
-    build: 
+      db:
+        condition: service_healthy
+    # TODO: replace curl on dotnet tools for health checking
+    # healthcheck:
+    #   test: curl --silent --fail http://api_products:80/health || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    build:
       context: .
       dockerfile: Dockerfile.products
     environment:
       DB_CONNECTION_STRING: "Username=postgres;Password=mysecretpassword;host=db;Port=5432;Database=products;Integrated Security=true;Pooling=true;"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
+      ASPNETCORE_ENVIRONMENT: "Development"
     ports:
       - "5220:80"
+      - "5221:443"
     networks:
       - api-network
+    volumes:
+      - ./dev-certs/:/https:ro
 
   db:
     image: postgres:latest
     restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=mysecretpassword
       - POSTGRES_DB=postgres
+    user: postgres
     ports:
       - "5432:5432"
     volumes:

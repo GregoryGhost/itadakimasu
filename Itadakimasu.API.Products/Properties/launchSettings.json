@@ -7,7 +7,7 @@
       "applicationUrl": "http://localhost:5220;https://localhost:7220",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "DB_CONNECTION_STRING": ""
+        "DB_CONNECTION_STRING": "Username=postgres;Password=mysecretpassword;host=localhost;Port=5432;Database=products;Integrated Security=true;Pooling=true;"
       }
     }
   }
