@@ -69,6 +69,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductScrapper", "ProductS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProductScrapper.Tests", "ProductScrapper.Tests\ProductScrapper.Tests.csproj", "{98F73E58-5604-4BEE-942F-D57C14D8190B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Itadakimasu.Core.Tests", "Itadakimasu.Core.Tests\Itadakimasu.Core.Tests.csproj", "{4A82D3E4-10A1-4F8E-9DAD-67B74B3A9791}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -103,6 +105,7 @@ Global
 		{77266B7A-BD29-492A-A65A-2E090E8370C2} = {98C17EB2-FB5A-47D5-8367-A59853801070}
 		{E7401D36-7326-4A48-80C9-DE2F42E8B74F} = {77266B7A-BD29-492A-A65A-2E090E8370C2}
 		{98F73E58-5604-4BEE-942F-D57C14D8190B} = {77266B7A-BD29-492A-A65A-2E090E8370C2}
+		{4A82D3E4-10A1-4F8E-9DAD-67B74B3A9791} = {ABDE7931-1C9D-41E0-9BDB-B3105267258B}
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{C51D8A40-3705-4E10-BA32-0C0B3D57CA5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -193,5 +196,9 @@ Global
 		{98F73E58-5604-4BEE-942F-D57C14D8190B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{98F73E58-5604-4BEE-942F-D57C14D8190B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{98F73E58-5604-4BEE-942F-D57C14D8190B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A82D3E4-10A1-4F8E-9DAD-67B74B3A9791}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A82D3E4-10A1-4F8E-9DAD-67B74B3A9791}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A82D3E4-10A1-4F8E-9DAD-67B74B3A9791}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A82D3E4-10A1-4F8E-9DAD-67B74B3A9791}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

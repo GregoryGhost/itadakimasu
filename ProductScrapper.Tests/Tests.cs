@@ -1,8 +1,8 @@
 namespace ProductScrapper.Tests;
 
-using AngleSharp.Html.Parser;
-
 using FluentAssertions;
+
+using ProductScrapper.Tests.TestCases;
 
 public class Tests
 {
@@ -11,33 +11,31 @@ public class Tests
     {
     }
 
-    [Test]
-    public async Task TestScrapProducts()
-    {
-        var httpClient = new HttpClient();
-        var settings = new ScrappingSettings
-        {
-            ScrappingRestaurantUrls = new []
-            {
-                "https://mistertako.ru/menyu/wok",
-                "https://mistertako.ru/menyu/wok?page=2",
-                "https://mistertako.ru/menyu/bluda-fri",
-                "https://mistertako.ru/menyu/deserty",
-                "https://mistertako.ru/menyu/dobavki",
-                "https://mistertako.ru/menyu/napitki",
-                "https://mistertako.ru/menyu/osnovnye-bluda",
-                "https://mistertako.ru/menyu/rolly",
-                "https://mistertako.ru/menyu/rolly?page=2",
-                "https://mistertako.ru/menyu/salaty",
-                "https://mistertako.ru/menyu/supy"
-            }
-        };
-        var htmlParser = new HtmlParser();
-        var scrapper = new MrTakoScrapper(httpClient, settings, htmlParser);
-        var scrappedProducts = (await scrapper.ScrapProductsAsync()).ToList();
+    // [TestCaseSource(typeof(MrTakoScrapRealWebsiteTestCases))]
+    // public async Task TestScrapRealProductsAsync(ScrappingInputData inputData)
+    // {
+    //     var scrappedProducts = (await inputData.Scrapper.ScrapProductsAsync()).ToList();
+    //
+    //     scrappedProducts.Should().NotBeEmpty();
+    //     
+    //     var formatted = string.Join(", ", scrappedProducts);
+    //     Console.WriteLine($"Total count: {scrappedProducts.Count}. Scrapped products: {formatted}");
+    // }
+    //
+    // [TestCaseSource(typeof(MrTakoParseTestDataTestCases))]
+    // public async Task TestScrapProductsAsync(ScrappingInputData inputData, ExpectedProducts expected)
+    // {
+    //     var actual = (await inputData.Scrapper.ScrapProductsAsync()).ToList();
+    //
+    //     actual.Should().BeEquivalentTo(expected.ScrappedProducts);
+    // }
 
-        scrappedProducts.Should().NotBeEmpty();
-        var formatted = string.Join(", ", scrappedProducts);
-        Console.WriteLine($"Total count: {scrappedProducts.Count}. Scrapped products: {formatted}");
+    [TestCaseSource(typeof(MrTakoParseTestDataTestCases))]
+    public async Task TestParseProductsAsync(string testCaseName, ParsingInputData inputData, ExpectedProducts expected)
+    {
+        var actual = (await inputData.Parser.ParseProductsAsync(inputData.SourceParsingData))
+            .ToList();
+        
+        actual.Should().BeEquivalentTo(expected.ScrappedProducts);
     }
 }

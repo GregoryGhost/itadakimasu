@@ -18,7 +18,15 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Itadakimasu.Core.Tests\Itadakimasu.Core.Tests.csproj" />
       <ProjectReference Include="..\ProductScrapper\ProductScrapper.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="TestData\Супы.html" />
+      <Content Include="TestData\Супы.html">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
 </Project>

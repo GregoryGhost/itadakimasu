@@ -42,7 +42,7 @@ public class Tests
     [TestCase("UnknownProduct.png", null)]
     public void FuzzySearchFoodByImage(string productImageName, int? productIndex)
     {
-        var imagePath = AppDomain.CurrentDomain.BaseDirectory + productImageName;
+        var imagePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, productImageName);
         var recognizedText = ProductDetector.FindProductByImage(imagePath, Products);
 
         var expected = GetExpectedProductByImage(productIndex);
