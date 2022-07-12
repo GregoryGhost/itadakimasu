@@ -1,0 +1,134 @@
+syntax = "proto3";
+
+package products_proxy.v1;
+
+import "Protos/Common/pagination_options.proto";
+import "Protos/Common/custom_types.proto";
+import "google/protobuf/timestamp.proto";
+
+// The products aggregator service definition.
+// The service aggregate product infos from other data sources.
+service ProductsProxy {  
+  // Get paginated products by pagination options.
+  rpc ListProducts (ProductsPagination) returns (PaginatedProducts);
+
+  // Get paginated restaurants by pagination options.
+  rpc ListRestaurants (RestaurantsPagination) returns (PaginatedRestaurants);
+
+  // Get status of synchronization restaurant by restaurant id.
+  rpc GetStatusSynchronization (SynchronizationRestaurantId) returns (RestaurantProductsStatusSynchronization);
+
+  // Get paginated statuses of synchronization restaurants by pagination options.
+  rpc ListStatusSynchronization (SynchronizationRestaurantsPagination) returns (PaginatedSynchronizationRestaurants);
+  
+  // Create a request to synchronize products of a restaurant.
+  rpc CreateSynchronizationRestaurantRequest (SynchronizationRestaurantRequest) returns (CreatedSynchronizationRestaurantRequest);
+}
+
+// Request to synchronize products of restaurant.
+message SynchronizationRestaurantRequest {
+  // Request for a restaurant id.
+  fixed64 restaurant_id = 1;
+}
+
+// Created synchronization restaurant request.
+message CreatedSynchronizationRestaurantRequest {
+  // Request id.
+  fixed64 request_id = 1;
+}
+
+// Synchronization restaurant info id.
+message SynchronizationRestaurantId {
+  // Synchronization restaurant id.
+  fixed64 id = 1;
+}
+
+// Synchronization statuses of restaurant products.
+enum SynchronizationRestaurantProductStatuses {
+  IN_PROGRESS = 0;
+  DONE = 1;
+}
+
+// Pagination info for synchronization restaurants.
+message SynchronizationRestaurantsPagination {
+  // Pagination info.
+  PaginationOptions.Pagination pagination = 1;
+}
+
+// Paginated synchronization restaurants.
+message PaginatedSynchronizationRestaurants {
+  // The collection of synchronization restaurants.
+  repeated RestaurantProductsStatusSynchronization restaurants = 1;
+
+  // A page synchronization restaurants info.
+  PaginationOptions.PageInfo page_info = 2;
+}
+
+// Status of synchronization restaurant products.
+message RestaurantProductsStatusSynchronization {
+  // Synchronization restaurant id.
+  fixed64 id = 1;
+
+  // Synchronization status.
+  SynchronizationRestaurantProductStatuses status = 2;
+
+  // Start synchronization date.
+  google.protobuf.Timestamp start_date = 3;
+
+  // End synchronization date. Optional.
+  google.protobuf.Timestamp end_date = 4;
+}
+
+// Pagination info for available restaurants.
+message RestaurantsPagination {
+  // Pagination info.
+  PaginationOptions.Pagination pagination = 1;
+}
+
+// Paginated available restaurants.
+message PaginatedRestaurants {
+  // The collection of restaurants.
+  repeated RestaurantDto products = 1;
+
+  // A page restaurants info.
+  PaginationOptions.PageInfo page_info = 2;
+}
+
+// Pagination info for products.
+message ProductsPagination {
+  // Pagination info.
+  PaginationOptions.Pagination pagination = 1;
+}
+
+// Paginated product.
+message PaginatedProducts {
+  // The collection of products.
+  repeated ProductDto products = 1;
+
+  // A page products info.
+  PaginationOptions.PageInfo page_info = 2;
+}
+
+// A restaurant info.
+message RestaurantDto {
+  // Restaurant id.
+  fixed64 id = 1;
+
+  // Restaurant name.
+  string name = 2;
+}
+
+// A product info.
+message ProductDto {
+  // Product id.
+  fixed64 id = 1;
+
+  // Product name.
+  string name = 2;
+
+  // Product price.
+  CustomTypes.DecimalValue price = 3;
+
+  // Restaurant id.
+  fixed64 restaurant_id = 4;
+}

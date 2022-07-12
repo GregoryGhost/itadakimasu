@@ -11,12 +11,20 @@ using Merchandiser.V1;
 
 using Microsoft.EntityFrameworkCore;
 
+/// <summary>
+/// Merchandiser products service.
+/// </summary>
 public class MerchandiserService : Merchandiser.MerchandiserBase
 {
     private readonly AppDbContext _dbContext;
 
     private readonly ILogger<MerchandiserService> _logger;
 
+    /// <summary>
+    /// Initialize depedencies.
+    /// </summary>
+    /// <param name="logger">Logger service.</param>
+    /// <param name="dbContext">Database context.</param>
     public MerchandiserService(ILogger<MerchandiserService> logger, AppDbContext dbContext)
     {
         _logger = logger;
