@@ -21,14 +21,14 @@ public class Tests
     //     var formatted = string.Join(", ", scrappedProducts);
     //     Console.WriteLine($"Total count: {scrappedProducts.Count}. Scrapped products: {formatted}");
     // }
-    //
-    // [TestCaseSource(typeof(MrTakoParseTestDataTestCases))]
-    // public async Task TestScrapProductsAsync(ScrappingInputData inputData, ExpectedProducts expected)
-    // {
-    //     var actual = (await inputData.Scrapper.ScrapProductsAsync()).ToList();
-    //
-    //     actual.Should().BeEquivalentTo(expected.ScrappedProducts);
-    // }
+    
+    [TestCaseSource(typeof(MrTakoScrapTestDataTestCases))]
+    public async Task TestScrapProductsAsync(string testCaseName, ScrappingInputData inputData, ExpectedProducts expected)
+    {
+        var actual = (await inputData.Scrapper.ScrapProductsAsync()).ToList();
+    
+        actual.Should().BeEquivalentTo(expected.ScrappedProducts);
+    }
 
     [TestCaseSource(typeof(MrTakoParseTestDataTestCases))]
     public async Task TestParseProductsAsync(string testCaseName, ParsingInputData inputData, ExpectedProducts expected)

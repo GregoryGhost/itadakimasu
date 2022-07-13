@@ -1,31 +1,99 @@
 ﻿namespace ProductScrapper.Tests.TestCases;
 
+using System.Net;
+
 using AngleSharp.Html.Parser;
 
-public class MrTakoScrapTestDataTestCases 
+using Itadakimasu.Core.Tests;
+
+using ProductScrapper.Tests.TestData;
+
+public class MrTakoScrapTestDataTestCases : TestCases<ExpectedProducts, ScrappingInputData>
 {
-    public void Test()
+    /// <inheritdoc />
+    protected override IEnumerable<TestCase<ExpectedProducts, ScrappingInputData>> GetTestCases()
     {
-        var httpClient = new HttpClient();
+        return new[]
+        {
+            GetSuccessScrappingTestCase()
+        };
+    }
+
+    private static MrTakoScrappingTestCase GetSuccessScrappingTestCase()
+    {
+        var inputData = GetSuccessScrappingInputData();
+        var expected = GetSuccessScrappingExpected();
+
+        return new MrTakoScrappingTestCase
+        {
+            Expected = expected,
+            InputData = inputData,
+            TestCaseName = nameof(GetSuccessScrappingTestCase)
+        };
+    }
+
+    private static ExpectedProducts GetSuccessScrappingExpected()
+    {
+        var scrappedProducts = TestInputData.GetMrTakoScrappedProducts();
+        
+        return new ExpectedProducts
+        {
+            ScrappedProducts = scrappedProducts
+        };
+    }
+
+    private static ScrappingInputData GetSuccessScrappingInputData()
+    {
+        var scrapper = GetScrapper();
+
+        return new ScrappingInputData
+        {
+            Scrapper = scrapper,
+        };
+    }
+
+    private static IProductWebSiteScrapper GetScrapper()
+    {
         var settings = new ScrappingSettings
         {
             ScrappingRestaurantUrls = new []
             {
-                "https://mistertako.ru/menyu/wok",
-                "https://mistertako.ru/menyu/wok?page=2",
-                "https://mistertako.ru/menyu/bluda-fri",
-                "https://mistertako.ru/menyu/deserty",
-                "https://mistertako.ru/menyu/dobavki",
-                "https://mistertako.ru/menyu/napitki",
-                "https://mistertako.ru/menyu/osnovnye-bluda",
-                "https://mistertako.ru/menyu/rolly",
-                "https://mistertako.ru/menyu/rolly?page=2",
-                "https://mistertako.ru/menyu/salaty",
-                "https://mistertako.ru/menyu/supy"
+                "https://mistertako.ru/test-menu"
             }
         };
         var htmlParser = new HtmlParser();
         var productParser = new MrTakoParser(htmlParser);
-        IProductWebSiteScrapper scrapper = new MrTakoScrapper(httpClient, settings, productParser);
+        var httpClient = new MockedHttpClient();
+        var scrapper = new MrTakoScrapper(httpClient, settings, productParser);
+
+        return scrapper;
+    }
+
+    private record MrTakoScrappingTestCase : ScrappingTestCase;
+
+    private class MockedHttpMessageHandler : HttpMessageHandler
+    {
+        protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(BakedHttpResponseMessage());
+        }
+
+        private static HttpResponseMessage BakedHttpResponseMessage()
+        {
+            var html = TestInputData.GetMrTakoWebSiteData();
+            var httpResponse = new HttpResponseMessage
+            {
+                Content = new StringContent(html),
+                StatusCode = HttpStatusCode.OK,
+            };
+
+            return httpResponse;
+        }
+    }
+
+    private class MockedHttpClient : HttpClient
+    {
+        private static readonly MockedHttpMessageHandler HttpMessageHandler = new ();
+        public MockedHttpClient() : base(HttpMessageHandler) {}
     }
 }
