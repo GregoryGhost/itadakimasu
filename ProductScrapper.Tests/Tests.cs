@@ -1,6 +1,7 @@
 namespace ProductScrapper.Tests;
 
 using FluentAssertions;
+using FluentAssertions.CSharpFunctionalExtensions;
 
 using ProductScrapper.Tests.TestCases;
 
@@ -14,25 +15,29 @@ public class Tests
     [TestCaseSource(typeof(MrTakoParseTestDataTestCases))]
     public async Task TestParseProductsAsync(string testCaseName, ParsingInputData inputData, ExpectedProducts expected)
     {
-        var actual = (await inputData.Parser.ParseProductsAsync(inputData.SourceParsingData))
-            .ToList();
+        var actual = await inputData.Parser.ParseProductsAsync(inputData.SourceParsingData);
 
-        actual.Should().BeEquivalentTo(expected.ScrappedProducts);
+        actual.Result.Should().BeSuccess();
+        actual.Result.Value.Should().BeEquivalentTo(expected.ScrappedProducts);
     }
 
     [TestCaseSource(typeof(MrTakoScrapTestDataTestCases))]
     public async Task TestScrapProductsAsync(string testCaseName, ScrappingInputData inputData, ExpectedProducts expected)
     {
-        var actual = (await inputData.Scrapper.ScrapProductsAsync()).ToList();
+        var actual = await inputData.Scrapper.ScrapProductsAsync();
 
-        actual.Should().BeEquivalentTo(expected.ScrappedProducts);
+        actual.Errors.Should().BeEmpty();
+        actual.ScrappedProducts.ToList().Should().BeEquivalentTo(expected.ScrappedProducts);
     }
 
     [TestCaseSource(typeof(MrTakoScrapRealWebsiteTestCases))]
     public async Task TestScrapRealProductsAsync(string testCaseName, ScrappingInputData inputData, ExpectedProducts _)
     {
-        var scrappedProducts = (await inputData.Scrapper.ScrapProductsAsync()).ToList();
+        var actual = await inputData.Scrapper.ScrapProductsAsync();
 
+        actual.Errors.Should().BeEmpty();
+
+        var scrappedProducts = actual.ScrappedProducts.ToList();
         scrappedProducts.Should().NotBeEmpty();
 
         var formatted = string.Join(", ", scrappedProducts);

@@ -1,5 +1,7 @@
 ﻿namespace ProductScrapper.Tests.TestData;
 
+using ProductScrapper.Contracts;
+
 public static class TestInputData
 {
     public static IReadOnlyList<ScrappedProduct> GetMrTakoScrappedProducts()

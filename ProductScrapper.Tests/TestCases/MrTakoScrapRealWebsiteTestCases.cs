@@ -4,6 +4,8 @@ using AngleSharp.Html.Parser;
 
 using Itadakimasu.Core.Tests;
 
+using ProductScrapper.Contracts;
+using ProductScrapper.Services;
 using ProductScrapper.Tests.TestData;
 
 public class MrTakoScrapRealWebsiteTestCases : TestCases<ExpectedProducts, ScrappingInputData>

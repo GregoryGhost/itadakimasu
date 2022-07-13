@@ -2,6 +2,8 @@
 
 using Itadakimasu.Core.Tests;
 
+using ProductScrapper.Contracts;
+
 public record ParsingInputData
 {
     public IProductHtmlParser Parser { get; init; } = null!;
