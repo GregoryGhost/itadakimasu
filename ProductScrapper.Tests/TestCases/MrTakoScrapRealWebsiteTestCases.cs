@@ -16,45 +16,12 @@ public class MrTakoScrapRealWebsiteTestCases : TestCases<ExpectedProducts, Scrap
             GetSuccessScrappingTestCase()
         };
     }
-    
-    private static MrTakoScrappingTestCase GetSuccessScrappingTestCase()
-    {
-        var inputData = GetSuccessScrappingInputData();
-        var expected = GetSuccessScrappingExpected();
-
-        return new MrTakoScrappingTestCase
-        {
-            Expected = expected,
-            InputData = inputData,
-            TestCaseName = nameof(GetSuccessScrappingTestCase)
-        };
-    }
-
-    private static ExpectedProducts GetSuccessScrappingExpected()
-    {
-        var scrappedProducts = TestInputData.GetMrTakoScrappedProducts();
-        
-        return new ExpectedProducts
-        {
-            ScrappedProducts = scrappedProducts
-        };
-    }
-
-    private static ScrappingInputData GetSuccessScrappingInputData()
-    {
-        var scrapper = GetScrapper();
-
-        return new ScrappingInputData
-        {
-            Scrapper = scrapper,
-        };
-    }
 
     private static IProductWebSiteScrapper GetScrapper()
     {
         var settings = new ScrappingSettings
         {
-            ScrappingRestaurantUrls = new []
+            ScrappingRestaurantUrls = new[]
             {
                 "https://mistertako.ru/menyu/wok",
                 "https://mistertako.ru/menyu/wok?page=2",
@@ -75,6 +42,39 @@ public class MrTakoScrapRealWebsiteTestCases : TestCases<ExpectedProducts, Scrap
         var scrapper = new MrTakoScrapper(httpClient, settings, productParser);
 
         return scrapper;
+    }
+
+    private static ExpectedProducts GetSuccessScrappingExpected()
+    {
+        var scrappedProducts = TestInputData.GetMrTakoScrappedProducts();
+
+        return new ExpectedProducts
+        {
+            ScrappedProducts = scrappedProducts
+        };
+    }
+
+    private static ScrappingInputData GetSuccessScrappingInputData()
+    {
+        var scrapper = GetScrapper();
+
+        return new ScrappingInputData
+        {
+            Scrapper = scrapper,
+        };
+    }
+
+    private static MrTakoScrappingTestCase GetSuccessScrappingTestCase()
+    {
+        var inputData = GetSuccessScrappingInputData();
+        var expected = GetSuccessScrappingExpected();
+
+        return new MrTakoScrappingTestCase
+        {
+            Expected = expected,
+            InputData = inputData,
+            TestCaseName = nameof(GetSuccessScrappingTestCase)
+        };
     }
 
     private record MrTakoScrappingTestCase : ScrappingTestCase;

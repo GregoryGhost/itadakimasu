@@ -7,16 +7,16 @@ using Itadakimasu.ProductsAggregator.DAL;
 using ProductsProxy.V1;
 
 /// <summary>
-/// Products aggregator which aggregate product infos from different data sources to unified data format.
+///     Products aggregator which aggregate product infos from different data sources to unified data format.
 /// </summary>
-public class ProductsAggregatorService: ProductsProxy.ProductsProxyBase
+public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
 {
     private readonly AppDbContext _dbContext;
 
     private readonly ILogger<ProductsAggregatorService> _logger;
 
     /// <summary>
-    /// Initialize depedencies.
+    ///     Initialize depedencies.
     /// </summary>
     /// <param name="logger">Logger service.</param>
     /// <param name="dbContext">Database context.</param>
@@ -27,13 +27,14 @@ public class ProductsAggregatorService: ProductsProxy.ProductsProxyBase
     }
 
     /// <inheritdoc />
-    public override Task<PaginatedProducts> ListProducts(ProductsPagination request, ServerCallContext context)
+    public override Task<CreatedSynchronizationRestaurantRequest> CreateSynchronizationRestaurantRequest(
+        SynchronizationRestaurantRequest request, ServerCallContext context)
     {
         throw new NotImplementedException();
     }
 
     /// <inheritdoc />
-    public override Task<CreatedSynchronizationRestaurantRequest> CreateSynchronizationRestaurantRequest(SynchronizationRestaurantRequest request, ServerCallContext context)
+    public override Task<PaginatedProducts> ListProducts(ProductsPagination request, ServerCallContext context)
     {
         throw new NotImplementedException();
     }

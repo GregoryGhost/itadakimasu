@@ -15,7 +15,7 @@ builder.Services.AddGrpcReflection();
 builder.Services.AddGrpcHealthChecks();
 
 var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
-    ?? builder.Configuration.GetConnectionString("DefaultConnection");
+                       ?? builder.Configuration.GetConnectionString("DefaultConnection");
 if (string.IsNullOrEmpty(connectionString))
     throw new ApplicationException("You should provide connection string to database.");
 builder.Services.AddDbContext<AppDbContext>(

@@ -12,22 +12,22 @@ using JetBrains.Annotations;
 [PublicAPI]
 public interface IProductScrapper<TParsingSourceData>
 {
-    ScrappingSettings ScrappingSettings { get; init; }
-    
     IProductParser<TParsingSourceData> ProductParser { get; init; }
 
-    Task<IEnumerable<ScrappedProduct>> ScrapSerialProductsAsync(string scrappingUrl);
-    
+    ScrappingSettings ScrappingSettings { get; init; }
+
     async Task<IEnumerable<ScrappedProduct>> ScrapProductsAsync()
     {
         var scrappedProductsTasks = ScrappingSettings.ScrappingRestaurantUrls
-                                                      .Select(async scrappingUrl => await ScrapSerialProductsAsync(scrappingUrl));
+                                                     .Select(async scrappingUrl => await ScrapSerialProductsAsync(scrappingUrl));
         var scrappedProducts = (await Task.WhenAll(scrappedProductsTasks))
                                .SelectMany(x => x)
                                .ToList();
 
         return scrappedProducts;
     }
+
+    Task<IEnumerable<ScrappedProduct>> ScrapSerialProductsAsync(string scrappingUrl);
 }
 
 [PublicAPI]
@@ -36,7 +36,9 @@ public interface IProductHtmlParser : IProductParser<string>
 }
 
 [PublicAPI]
-public interface IProductWebSiteScrapper : IProductScrapper<string> {}
+public interface IProductWebSiteScrapper : IProductScrapper<string>
+{
+}
 
 [PublicAPI]
 public abstract class ProductWebSiteScrapper : IProductWebSiteScrapper
@@ -50,21 +52,19 @@ public abstract class ProductWebSiteScrapper : IProductWebSiteScrapper
         ProductParser = productParser;
     }
 
+    public IProductParser<string> ProductParser { get; init; }
+
     /// <inheritdoc />
     public ScrappingSettings ScrappingSettings { get; init; }
-
-    public IProductParser<string> ProductParser { get; init; }
 
     /// <inheritdoc />
     public async Task<IEnumerable<ScrappedProduct>> ScrapSerialProductsAsync(string scrappingUrl)
     {
         var response = await _httpClient.GetAsync(scrappingUrl);
         if (!response.IsSuccessStatusCode)
-        {
             //TODO: replace on error result
             return Enumerable.Empty<ScrappedProduct>();
-        }
-        
+
         var htmlSourceCode = await response.Content.ReadAsStringAsync();
         var parsedProducts = await ProductParser.ParseProductsAsync(htmlSourceCode);
 
@@ -82,5 +82,6 @@ public interface IProductParser<in TSourceData>
 public record ScrappedProduct
 {
     public string Name { get; init; } = null!;
+
     public decimal Price { get; init; }
 }

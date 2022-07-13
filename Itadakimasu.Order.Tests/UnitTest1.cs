@@ -1,7 +1,5 @@
 namespace Itadakimasu.Order.Tests;
 
-using Greet.V1;
-
 using Itadakimasu.API.Order.Services;
 
 using Microsoft.Extensions.Logging;

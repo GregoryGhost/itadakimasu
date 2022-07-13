@@ -12,11 +12,11 @@
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="6.0.5"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Itadakimasu.Products.DAL\Itadakimasu.Products.DAL.csproj" />
+        <ProjectReference Include="..\Itadakimasu.Products.DAL\Itadakimasu.Products.DAL.csproj"/>
     </ItemGroup>
 
 </Project>

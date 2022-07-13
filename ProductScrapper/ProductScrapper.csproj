@@ -8,13 +8,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="AngleSharp" Version="0.17.1" />
-      <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
+        <PackageReference Include="AngleSharp" Version="0.17.1"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Contracts" />
-      <Folder Include="Services" />
+        <Folder Include="Contracts"/>
+        <Folder Include="Services"/>
     </ItemGroup>
 
 </Project>

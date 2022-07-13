@@ -3,7 +3,7 @@ namespace Itadakimasu.Core.Tests;
 using JetBrains.Annotations;
 
 [PublicAPI]
-public record TestCase<TExpected, TInputData> 
+public record TestCase<TExpected, TInputData>
     where TExpected : notnull
     where TInputData : notnull
 {

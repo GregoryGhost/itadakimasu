@@ -12,7 +12,7 @@ using Merchandiser.V1;
 using Microsoft.EntityFrameworkCore;
 
 /// <summary>
-/// Merchandiser products service.
+///     Merchandiser products service.
 /// </summary>
 public class MerchandiserService : Merchandiser.MerchandiserBase
 {
@@ -21,7 +21,7 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     private readonly ILogger<MerchandiserService> _logger;
 
     /// <summary>
-    /// Initialize depedencies.
+    ///     Initialize depedencies.
     /// </summary>
     /// <param name="logger">Logger service.</param>
     /// <param name="dbContext">Database context.</param>
@@ -73,7 +73,7 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     /// <inheritdoc />
     public override async Task<FoundProductDto> GetProduct(ProductId request, ServerCallContext context)
     {
-        var foundProduct = await _dbContext.Products.SingleOrDefaultAsync(x => x.Id == (long)request.Id);
+        var foundProduct = await _dbContext.Products.SingleOrDefaultAsync(x => x.Id == (long) request.Id);
         if (foundProduct is null)
             return new FoundProductDto
             {
@@ -169,7 +169,7 @@ public class MerchandiserService : Merchandiser.MerchandiserBase
     {
         var dto = new ProductDto
         {
-            Id = (ulong)product.Id,
+            Id = (ulong) product.Id,
             Name = product.Name,
             Price = product.Price
         };

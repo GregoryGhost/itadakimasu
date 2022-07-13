@@ -19,23 +19,27 @@ public class MrTakoScrapTestDataTestCases : TestCases<ExpectedProducts, Scrappin
         };
     }
 
-    private static MrTakoScrappingTestCase GetSuccessScrappingTestCase()
+    private static IProductWebSiteScrapper GetScrapper()
     {
-        var inputData = GetSuccessScrappingInputData();
-        var expected = GetSuccessScrappingExpected();
-
-        return new MrTakoScrappingTestCase
+        var settings = new ScrappingSettings
         {
-            Expected = expected,
-            InputData = inputData,
-            TestCaseName = nameof(GetSuccessScrappingTestCase)
+            ScrappingRestaurantUrls = new[]
+            {
+                "https://mistertako.ru/test-menu"
+            }
         };
+        var htmlParser = new HtmlParser();
+        var productParser = new MrTakoParser(htmlParser);
+        var httpClient = new MockedHttpClient();
+        var scrapper = new MrTakoScrapper(httpClient, settings, productParser);
+
+        return scrapper;
     }
 
     private static ExpectedProducts GetSuccessScrappingExpected()
     {
         var scrappedProducts = TestInputData.GetMrTakoScrappedProducts();
-        
+
         return new ExpectedProducts
         {
             ScrappedProducts = scrappedProducts
@@ -52,21 +56,17 @@ public class MrTakoScrapTestDataTestCases : TestCases<ExpectedProducts, Scrappin
         };
     }
 
-    private static IProductWebSiteScrapper GetScrapper()
+    private static MrTakoScrappingTestCase GetSuccessScrappingTestCase()
     {
-        var settings = new ScrappingSettings
-        {
-            ScrappingRestaurantUrls = new []
-            {
-                "https://mistertako.ru/test-menu"
-            }
-        };
-        var htmlParser = new HtmlParser();
-        var productParser = new MrTakoParser(htmlParser);
-        var httpClient = new MockedHttpClient();
-        var scrapper = new MrTakoScrapper(httpClient, settings, productParser);
+        var inputData = GetSuccessScrappingInputData();
+        var expected = GetSuccessScrappingExpected();
 
-        return scrapper;
+        return new MrTakoScrappingTestCase
+        {
+            Expected = expected,
+            InputData = inputData,
+            TestCaseName = nameof(GetSuccessScrappingTestCase)
+        };
     }
 
     private record MrTakoScrappingTestCase : ScrappingTestCase;
@@ -93,7 +93,11 @@ public class MrTakoScrapTestDataTestCases : TestCases<ExpectedProducts, Scrappin
 
     private class MockedHttpClient : HttpClient
     {
-        private static readonly MockedHttpMessageHandler HttpMessageHandler = new ();
-        public MockedHttpClient() : base(HttpMessageHandler) {}
+        private static readonly MockedHttpMessageHandler HttpMessageHandler = new();
+
+        public MockedHttpClient()
+            : base(HttpMessageHandler)
+        {
+        }
     }
 }

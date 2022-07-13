@@ -17,23 +17,18 @@ public class MrTakoParseTestDataTestCases : TestCases<ExpectedProducts, ParsingI
         };
     }
 
-    private static MrTakoParsingTestCase GetSuccessParsingTestCase()
+    private static IProductHtmlParser GetParser()
     {
-        var inputData = GetSuccessParsingInputData();
-        var expected = GetSuccessParsingExpected();
+        var htmlParser = new HtmlParser();
+        var productParser = new MrTakoParser(htmlParser);
 
-        return new MrTakoParsingTestCase
-        {
-            Expected = expected,
-            InputData = inputData,
-            TestCaseName = nameof(GetSuccessParsingTestCase)
-        };
+        return productParser;
     }
 
     private static ExpectedProducts GetSuccessParsingExpected()
     {
         var scrappedProducts = TestInputData.GetMrTakoScrappedProducts();
-        
+
         return new ExpectedProducts
         {
             ScrappedProducts = scrappedProducts
@@ -52,12 +47,17 @@ public class MrTakoParseTestDataTestCases : TestCases<ExpectedProducts, ParsingI
         };
     }
 
-    private static IProductHtmlParser GetParser()
+    private static MrTakoParsingTestCase GetSuccessParsingTestCase()
     {
-        var htmlParser = new HtmlParser();
-        var productParser = new MrTakoParser(htmlParser);
+        var inputData = GetSuccessParsingInputData();
+        var expected = GetSuccessParsingExpected();
 
-        return productParser;
+        return new MrTakoParsingTestCase
+        {
+            Expected = expected,
+            InputData = inputData,
+            TestCaseName = nameof(GetSuccessParsingTestCase)
+        };
     }
 
     private record MrTakoParsingTestCase : ParsingTestCase;

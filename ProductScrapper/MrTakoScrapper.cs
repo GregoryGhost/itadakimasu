@@ -22,29 +22,25 @@ public class MrTakoParser : IProductHtmlParser
                                          .Select(x => x.InnerHtml)
                                          .ToList();
         var parsedProductPrices = document.QuerySelectorAll("span")
-                                          .Where(x => x.Attributes.FirstOrDefault(y => y.Name == "itemprop" && y.Value == "price") is not null)
+                                          .Where(
+                                              x => x.Attributes.FirstOrDefault(
+                                                  y => y.Name == "itemprop" && y.Value == "price") is not null)
                                           .Select(x => x.InnerHtml)
                                           .ToList();
         var isNotEqualCountNamesAndPrices = parsedProductNames.Count != parsedProductPrices.Count;
         if (isNotEqualCountNamesAndPrices)
-        {
             //TODO: replace on error result
             return Enumerable.Empty<ScrappedProduct>();
-        }
 
         var isEmptyProductNames = !parsedProductNames.Any();
         if (isEmptyProductNames)
-        {
             //TODO: replace on error result
             return Enumerable.Empty<ScrappedProduct>();
-        }
-        
+
         var isEmptyProductPrices = !parsedProductPrices.Any();
         if (isEmptyProductPrices)
-        {
             //TODO: replace on error result
             return Enumerable.Empty<ScrappedProduct>();
-        }
 
         var parsedProductInfos = parsedProductNames.Zip(parsedProductPrices)
                                                    .Select(
@@ -65,11 +61,13 @@ public class MrTakoParser : IProductHtmlParser
                                                    .Where(
                                                        x => !string.IsNullOrWhiteSpace(x.ProductName) &&
                                                             x.ProductPrice is not null)
-                                                   .Select(x => new ScrappedProduct
-                                                   {
-                                                       Name = x.ProductName,
-                                                       Price = x.ProductPrice ?? throw new Exception("Product price have no value.")
-                                                   })
+                                                   .Select(
+                                                       x => new ScrappedProduct
+                                                       {
+                                                           Name = x.ProductName,
+                                                           Price = x.ProductPrice ??
+                                                                   throw new Exception("Product price have no value.")
+                                                       })
                                                    .ToList();
 
         return parsedProductInfos;
@@ -77,7 +75,7 @@ public class MrTakoParser : IProductHtmlParser
 }
 
 [PublicAPI]
-public class MrTakoScrapper: ProductWebSiteScrapper
+public class MrTakoScrapper : ProductWebSiteScrapper
 {
     // ReSharper disable once SuggestBaseTypeForParameterInConstructor
     public MrTakoScrapper(HttpClient httpClient, ScrappingSettings scrappingSettings, MrTakoParser productParser)
