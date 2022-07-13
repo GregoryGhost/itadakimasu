@@ -2,8 +2,6 @@
 
 using JetBrains.Annotations;
 
-using ProductScrapper.Services;
-
 [PublicAPI]
 public interface IProductScrapper<TParsingSourceData>
 {
@@ -16,8 +14,8 @@ public interface IProductScrapper<TParsingSourceData>
         var scrappedProductsTasks = ScrappingSettings.ScrappingRestaurantUrls
                                                      .Select(async scrappingUrl => await ScrapSerialProductsAsync(scrappingUrl));
         var groupedResults = (await Task.WhenAll(scrappedProductsTasks))
-                               .Select(x => x.Result)
-                               .ToList();
+                             .Select(x => x.Result)
+                             .ToList();
         var scrappedErrors = groupedResults.Where(x => x.IsFailure)
                                            .Select(x => x.Error)
                                            .ToList();

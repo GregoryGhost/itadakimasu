@@ -31,7 +31,7 @@ public class MrTakoParser : IProductHtmlParser
         var isEmptyProductPrices = !parsedProductPrices.Any();
         if (isEmptyProductPrices)
             return ScrappingErrors.OnParsingNotFoundProductPrices;
-        
+
         var isNotEqualCountNamesAndPrices = parsedProductNames.Count != parsedProductPrices.Count;
         if (isNotEqualCountNamesAndPrices)
             return ScrappingErrors.OnParsingMismatchProductNamesAndPrices;
@@ -39,6 +39,33 @@ public class MrTakoParser : IProductHtmlParser
         var parsedProductInfos = MatchProductInfo(parsedProductNames, parsedProductPrices);
 
         return parsedProductInfos;
+    }
+
+    private static string GetSourcePrice(IElement element)
+    {
+        var productPrice = element.Attributes.FirstOrDefault(x => x.Name == "content")?.Value ?? string.Empty;
+
+        return productPrice;
+    }
+
+    private static bool IsExistingProductPrice(IElement element)
+    {
+        var found = element.Attributes.FirstOrDefault(
+            y => y.Name == "itemprop" && y.Value == "price");
+        var isExistingPrice = found is not null;
+
+        return isExistingPrice;
+    }
+
+    private static bool IsSoldOutProduct(IElement element)
+    {
+        var isSoldOutProduct = element.NodeName == "meta";
+        var found = element.Attributes.FirstOrDefault(
+            x => x.Name == "itemprop" && x.Value == "price");
+        var isPrice = found is not null;
+        var isCorrect = isSoldOutProduct && isPrice;
+
+        return isCorrect;
     }
 
     private static List<ScrappedProduct> MatchProductInfo(List<string> parsedProductNames, List<string> parsedProductPrices)
@@ -89,46 +116,15 @@ public class MrTakoParser : IProductHtmlParser
                                               x =>
                                               {
                                                   if (IsExistingProductPrice(x))
-                                                  {
                                                       return x.InnerHtml;
-                                                  }
 
                                                   if (IsSoldOutProduct(x))
-                                                  {
                                                       return GetSourcePrice(x);
-                                                  }
 
                                                   return string.Empty;
                                               })
                                           .ToList();
         return parsedProductPrices;
-    }
-
-    private static bool IsExistingProductPrice(IElement element)
-    {
-        var found = element.Attributes.FirstOrDefault(
-            y => y.Name == "itemprop" && y.Value == "price");
-        var isExistingPrice = found is not null;
-        
-        return isExistingPrice;
-    }
-
-    private static bool IsSoldOutProduct(IElement element)
-    {
-        var isSoldOutProduct = element.NodeName == "meta";
-        var found = element.Attributes.FirstOrDefault(
-            x => x.Name == "itemprop" && x.Value == "price");
-        var isPrice = found is not null;
-        var isCorrect = isSoldOutProduct && isPrice;
-
-        return isCorrect;
-    }
-
-    private static string GetSourcePrice(IElement element)
-    {
-        var productPrice = element.Attributes.FirstOrDefault(x => x.Name == "content")?.Value ?? string.Empty;
-
-        return productPrice;
     }
 }
 

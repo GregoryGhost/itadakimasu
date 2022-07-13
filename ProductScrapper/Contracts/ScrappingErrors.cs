@@ -2,18 +2,21 @@ namespace ProductScrapper.Contracts;
 
 using Ardalis.SmartEnum;
 
-public abstract class ScrappingErrors: SmartEnum<ScrappingErrors>
+public abstract class ScrappingErrors : SmartEnum<ScrappingErrors>
 {
-    public static readonly ScrappingErrors ResponseError = new WebSiteResponseError();
     public static readonly ScrappingErrors OnParsingMismatchProductNamesAndPrices = new MismatchProductNamesAndPricesError();
+
     public static readonly ScrappingErrors OnParsingNotFoundProductNames = new NotFoundProductNamesError();
+
     public static readonly ScrappingErrors OnParsingNotFoundProductPrices = new NotFoundProductPricesError();
+
+    public static readonly ScrappingErrors ResponseError = new WebSiteResponseError();
 
     private ScrappingErrors(string name, int value)
         : base(name, value)
     {
     }
-    
+
     private sealed class WebSiteResponseError : ScrappingErrors
     {
         public WebSiteResponseError()
@@ -21,7 +24,7 @@ public abstract class ScrappingErrors: SmartEnum<ScrappingErrors>
         {
         }
     }
-    
+
     private sealed class MismatchProductNamesAndPricesError : ScrappingErrors
     {
         public MismatchProductNamesAndPricesError()
@@ -29,7 +32,7 @@ public abstract class ScrappingErrors: SmartEnum<ScrappingErrors>
         {
         }
     }
-    
+
     private sealed class NotFoundProductNamesError : ScrappingErrors
     {
         public NotFoundProductNamesError()
@@ -37,7 +40,7 @@ public abstract class ScrappingErrors: SmartEnum<ScrappingErrors>
         {
         }
     }
-    
+
     private sealed class NotFoundProductPricesError : ScrappingErrors
     {
         public NotFoundProductPricesError()

@@ -2,8 +2,6 @@
 
 using JetBrains.Annotations;
 
-using ProductScrapper.Services;
-
 [PublicAPI]
 public abstract class ProductWebSiteScrapper : IProductWebSiteScrapper
 {
