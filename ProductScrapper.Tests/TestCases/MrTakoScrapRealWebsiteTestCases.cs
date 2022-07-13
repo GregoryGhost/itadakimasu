@@ -2,11 +2,56 @@
 
 using AngleSharp.Html.Parser;
 
-public class MrTakoScrapRealWebsiteTestCases 
+using Itadakimasu.Core.Tests;
+
+using ProductScrapper.Tests.TestData;
+
+public class MrTakoScrapRealWebsiteTestCases : TestCases<ExpectedProducts, ScrappingInputData>
 {
-    public void Test()
+    /// <inheritdoc />
+    protected override IEnumerable<TestCase<ExpectedProducts, ScrappingInputData>> GetTestCases()
     {
-        var httpClient = new HttpClient();
+        return new[]
+        {
+            GetSuccessScrappingTestCase()
+        };
+    }
+    
+    private static MrTakoScrappingTestCase GetSuccessScrappingTestCase()
+    {
+        var inputData = GetSuccessScrappingInputData();
+        var expected = GetSuccessScrappingExpected();
+
+        return new MrTakoScrappingTestCase
+        {
+            Expected = expected,
+            InputData = inputData,
+            TestCaseName = nameof(GetSuccessScrappingTestCase)
+        };
+    }
+
+    private static ExpectedProducts GetSuccessScrappingExpected()
+    {
+        var scrappedProducts = TestInputData.GetMrTakoScrappedProducts();
+        
+        return new ExpectedProducts
+        {
+            ScrappedProducts = scrappedProducts
+        };
+    }
+
+    private static ScrappingInputData GetSuccessScrappingInputData()
+    {
+        var scrapper = GetScrapper();
+
+        return new ScrappingInputData
+        {
+            Scrapper = scrapper,
+        };
+    }
+
+    private static IProductWebSiteScrapper GetScrapper()
+    {
         var settings = new ScrappingSettings
         {
             ScrappingRestaurantUrls = new []
@@ -26,6 +71,11 @@ public class MrTakoScrapRealWebsiteTestCases
         };
         var htmlParser = new HtmlParser();
         var productParser = new MrTakoParser(htmlParser);
-        IProductWebSiteScrapper scrapper = new MrTakoScrapper(httpClient, settings, productParser);
+        var httpClient = new HttpClient();
+        var scrapper = new MrTakoScrapper(httpClient, settings, productParser);
+
+        return scrapper;
     }
+
+    private record MrTakoScrappingTestCase : ScrappingTestCase;
 }
