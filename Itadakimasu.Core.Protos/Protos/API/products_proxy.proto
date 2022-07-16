@@ -88,7 +88,7 @@ message RestaurantsPagination {
 // Paginated available restaurants.
 message PaginatedRestaurants {
   // The collection of restaurants.
-  repeated RestaurantDto products = 1;
+  repeated RestaurantDto restaurants = 1;
 
   // A page restaurants info.
   PaginationOptions.PageInfo page_info = 2;

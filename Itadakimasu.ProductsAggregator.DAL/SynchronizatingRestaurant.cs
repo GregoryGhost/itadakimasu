@@ -2,7 +2,7 @@ namespace Itadakimasu.ProductsAggregator.DAL;
 
 using Itadakimasu.Core.DAL;
 
-public class SynchronizatingProduct : BaseEntity
+public class SynchronizatingRestaurant : BaseEntity
 {
     public DateTime? EndSynchronization { get; set; }
 

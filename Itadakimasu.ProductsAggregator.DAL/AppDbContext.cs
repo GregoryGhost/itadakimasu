@@ -13,5 +13,5 @@ public class AppDbContext : DbContext
 
     public DbSet<Restaurant> Restaurants { get; set; } = null!;
 
-    public DbSet<SynchronizatingProduct> SynchronizatingProducts { get; set; } = null!;
+    public DbSet<SynchronizatingRestaurant> SynchronizatingRestaurants { get; set; } = null!;
 }
