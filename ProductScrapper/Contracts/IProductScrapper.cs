@@ -9,7 +9,7 @@ public interface IProductScrapper<TParsingSourceData>
 
     ScrappingSettings ScrappingSettings { get; init; }
 
-    async Task<ScrappingResults> ScrapProductsAsync()
+    async Task<ScrappedResults> ScrapProductsAsync()
     {
         var scrappedProductsTasks = ScrappingSettings.ScrappingRestaurantUrls
                                                      .Select(async scrappingUrl => await ScrapSerialProductsAsync(scrappingUrl));
@@ -23,7 +23,7 @@ public interface IProductScrapper<TParsingSourceData>
                                              .SelectMany(x => x.Value)
                                              .ToList();
 
-        var results = new ScrappingResults
+        var results = new ScrappedResults
         {
             Errors = scrappedErrors,
             ScrappedProducts = scrappedProducts

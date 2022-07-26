@@ -1,6 +1,6 @@
 namespace ProductScrapper.Contracts;
 
-public record ScrappingResults
+public record ScrappedResults
 {
     public IEnumerable<ScrappingErrors> Errors { get; init; } = Enumerable.Empty<ScrappingErrors>();
 

@@ -6,6 +6,7 @@ using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;
 
+using Itadakimasu.API.ProductsAggregator.Models;
 using Itadakimasu.Core.DAL;
 using Itadakimasu.ProductsAggregator.DAL;
 
@@ -22,15 +23,30 @@ public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
 
     private readonly ILogger<ProductsAggregatorService> _logger;
 
+    private readonly ProductsSynchronizationWriter _productsSynchronizationWriter;
+
+    private readonly ProductsSynchronizationNotifier _productsSynchronizationNotifier;
+
     /// <summary>
     ///     Initialize depedencies.
     /// </summary>
     /// <param name="logger">Logger service.</param>
     /// <param name="dbContext">Database context.</param>
-    public ProductsAggregatorService(AppDbContext dbContext, ILogger<ProductsAggregatorService> logger)
+    public ProductsAggregatorService(AppDbContext dbContext, ILogger<ProductsAggregatorService> logger, ProductsSynchronizationWriter productsSynchronizationWriter, ProductsSynchronizationNotifier productsSynchronizationNotifier)
     {
         _dbContext = dbContext;
         _logger = logger;
+        _productsSynchronizationWriter = productsSynchronizationWriter;
+        _productsSynchronizationNotifier = productsSynchronizationNotifier;
+    }
+
+    /// <inheritdoc />
+    public override async Task GetSynchronizedRestaurantProductsRequest(Empty request, IServerStreamWriter<SynchronizedRestaurantProductsRequest> responseStream, ServerCallContext context)
+    {
+        await foreach (var synchronizingData in _productsSynchronizationNotifier.GetNotificationAsync(context.CancellationToken))
+        {
+            await responseStream.WriteAsync(synchronizingData);
+        }
     }
 
     /// <inheritdoc />
@@ -44,7 +60,9 @@ public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
             return null!;
 
         Debug.Assert(foundRestaurant != null, nameof(foundRestaurant) + " != null");
-        var created = await CreateNewSynchronizationRestaurantRequest(foundRestaurant);
+        var (created, newRequest) = await CreateNewSynchronizationRestaurantRequest(foundRestaurant);
+
+        await _productsSynchronizationWriter.WriteAsync(newRequest);
 
         return created;
     }
@@ -111,7 +129,8 @@ public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
         var pageInfo = await _dbContext.SynchronizatingRestaurants.ToPaginatedAsync(request.Pagination);
         var paginated = new PaginatedSynchronizationRestaurants
         {
-            PageInfo = pageInfo
+            PageInfo = pageInfo,
+            Restaurants = { list }
         };
 
         return paginated;
@@ -144,8 +163,8 @@ public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
 
         return (true, foundRestaurant);
     }
-
-    private async Task<CreatedSynchronizationRestaurantRequest> CreateNewSynchronizationRestaurantRequest(
+    
+    private async Task<(CreatedSynchronizationRestaurantRequest Created, SynchronizatingRestaurant NewRequest)> CreateNewSynchronizationRestaurantRequest(
         Restaurant foundRestaurant)
     {
         var newRequest = new SynchronizatingRestaurant
@@ -153,7 +172,8 @@ public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
             EndSynchronization = null,
             Restaurant = foundRestaurant,
             StartSynchronization = default,
-            Status = SynchronizationProductStatus.InProgress
+            Status = SynchronizationProductStatus.InProgress,
+            ScrappingErrors = string.Empty,
         };
         await _dbContext.SynchronizatingRestaurants.AddAsync(newRequest);
         await _dbContext.SaveChangesAsync();
@@ -163,7 +183,7 @@ public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
             RequestId = (ulong) newRequest.Id
         };
 
-        return created;
+        return (created, newRequest);
     }
 
     private static ProductDto MapDto(Product product)

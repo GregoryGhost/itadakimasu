@@ -23,6 +23,12 @@ public abstract class ScrappingErrors : SmartEnum<ScrappingErrors>
             : base(nameof(WebSiteResponseError), 0)
         {
         }
+
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return "Error on making request to website.";
+        }
     }
 
     private sealed class MismatchProductNamesAndPricesError : ScrappingErrors
@@ -30,6 +36,12 @@ public abstract class ScrappingErrors : SmartEnum<ScrappingErrors>
         public MismatchProductNamesAndPricesError()
             : base(nameof(MismatchProductNamesAndPricesError), 0)
         {
+        }
+        
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return "Error on match product names and prices.";
         }
     }
 
@@ -39,6 +51,12 @@ public abstract class ScrappingErrors : SmartEnum<ScrappingErrors>
             : base(nameof(NotFoundProductNamesError), 0)
         {
         }
+        
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return "Error on parse product names.";
+        }
     }
 
     private sealed class NotFoundProductPricesError : ScrappingErrors
@@ -47,5 +65,22 @@ public abstract class ScrappingErrors : SmartEnum<ScrappingErrors>
             : base(nameof(NotFoundProductPricesError), 0)
         {
         }
+        
+        /// <inheritdoc />
+        public override string ToString()
+        {
+            return "Error on parse product prices.";
+        }
+    }
+}
+
+public static class ScrappingErrorExtensions
+{
+    public static string GetScrappingErrors(this IEnumerable<ScrappingErrors> scrappingErrors)
+    {
+        var errors = scrappingErrors.Select(x => x.ToString());
+        var formatted = string.Join("\n", errors);
+
+        return formatted;
     }
 }

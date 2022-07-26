@@ -5,6 +5,7 @@ package products_proxy.v1;
 import "Protos/Common/pagination_options.proto";
 import "Protos/Common/custom_types.proto";
 import "google/protobuf/timestamp.proto";
+import "google/protobuf/empty.proto";
 
 // The products aggregator service definition.
 // The service aggregate product infos from other data sources.
@@ -23,6 +24,18 @@ service ProductsProxy {
   
   // Create a request to synchronize products of a restaurant.
   rpc CreateSynchronizationRestaurantRequest (SynchronizationRestaurantRequest) returns (CreatedSynchronizationRestaurantRequest);
+  
+  // Get synchronized restaurant request.
+  rpc GetSynchronizedRestaurantProductsRequest (google.protobuf.Empty) returns (stream SynchronizedRestaurantProductsRequest);
+}
+
+// Synchronized restaurant products by request id.
+message SynchronizedRestaurantProductsRequest {
+  // The collection of products.
+  repeated ProductDto products = 1;
+
+  // Synchronization restaurant request id.
+  fixed64 request_id = 2;
 }
 
 // Request to synchronize products of restaurant.
