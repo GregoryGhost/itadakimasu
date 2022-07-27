@@ -1,5 +1,10 @@
-﻿namespace CustomTypes;
+﻿// ReSharper disable once CheckNamespace
+//NOTE: use in auto-generated protofiles.
+namespace CustomTypes;
 
+using JetBrains.Annotations;
+
+[PublicAPI]
 public partial class DecimalValue
 {
     private const decimal NANO_FACTOR = 1_000_000_000;

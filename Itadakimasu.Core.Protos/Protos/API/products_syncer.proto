@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package products_syncer.v1;
+
+import "Protos/Common/pagination_options.proto";
+import "Protos/Common/custom_types.proto";
+import "Protos/Common/dto_types.proto";
+import "google/protobuf/timestamp.proto";
+
+// The products synchronizer service definition.
+// The service synchronize product infos from other data sources to API.Products.
+service ProductsSyncer {
+  // Get paginated statuses of synchronization restaurants by pagination options.
+  rpc Synchronize (stream SynchronizingData) returns (stream SynchronizedData);
+}
+
+// Synchronizing restaurant products by request id.
+message SynchronizingData {
+  // The collection of products.
+  repeated dto_types.ProductDto products = 1;
+
+  // Synchronization restaurant request id.
+  fixed64 request_id = 2;
+}
+
+// Synchronized restaurant products by request id.
+message SynchronizedData {
+  // Synchronization restaurant request id.
+  fixed64 request_id = 1;
+}

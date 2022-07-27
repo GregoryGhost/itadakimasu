@@ -4,6 +4,7 @@ package products_proxy.v1;
 
 import "Protos/Common/pagination_options.proto";
 import "Protos/Common/custom_types.proto";
+import "Protos/Common/dto_types.proto";
 import "google/protobuf/timestamp.proto";
 import "google/protobuf/empty.proto";
 
@@ -32,7 +33,7 @@ service ProductsProxy {
 // Synchronized restaurant products by request id.
 message SynchronizedRestaurantProductsRequest {
   // The collection of products.
-  repeated ProductDto products = 1;
+  repeated dto_types.ProductDto products = 1;
 
   // Synchronization restaurant request id.
   fixed64 request_id = 2;
@@ -116,7 +117,7 @@ message ProductsPagination {
 // Paginated product.
 message PaginatedProducts {
   // The collection of products.
-  repeated ProductDto products = 1;
+  repeated dto_types.ProductDto products = 1;
 
   // A page products info.
   PaginationOptions.PageInfo page_info = 2;
@@ -129,19 +130,4 @@ message RestaurantDto {
 
   // Restaurant name.
   string name = 2;
-}
-
-// A product info.
-message ProductDto {
-  // Product id.
-  fixed64 id = 1;
-
-  // Product name.
-  string name = 2;
-
-  // Product price.
-  CustomTypes.DecimalValue price = 3;
-
-  // Restaurant id.
-  fixed64 restaurant_id = 4;
 }

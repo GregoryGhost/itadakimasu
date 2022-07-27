@@ -24,6 +24,7 @@
         </Protobuf>
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0"/>
+        <PackageReference Include="Grpc.AspNetCore" Version="2.46.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
     </ItemGroup>
 </Project>

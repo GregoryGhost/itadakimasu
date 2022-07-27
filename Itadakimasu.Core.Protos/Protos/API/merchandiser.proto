@@ -6,9 +6,13 @@ import "google/protobuf/struct.proto";
 import "google/protobuf/empty.proto";
 import "Protos/Common/pagination_options.proto";
 import "Protos/Common/custom_types.proto";
+import "Protos/Common/dto_types.proto";
 
 // The products service definition.
 service Merchandiser {
+  // Batch create products.
+  rpc BatchCreateProducts (BatchProductsDto) returns (google.protobuf.Empty);
+  
   // Create a new product.
   rpc CreateProduct (NewProductDto) returns (ProductDto);
   
@@ -23,6 +27,12 @@ service Merchandiser {
   
   // Get paginated products by pagination options.
   rpc ListProducts (ProductsPagination) returns (PaginatedProducts);
+}
+
+// Batch products.
+message BatchProductsDto {
+  // The collection of products.
+  repeated dto_types.ProductDto products = 1;
 }
 
 // Pagination info for a products.

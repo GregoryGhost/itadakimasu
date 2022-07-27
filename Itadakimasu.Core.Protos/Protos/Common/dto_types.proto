@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package dto_types;
+
+import "Protos/Common/custom_types.proto";
+
+// A product info.
+message ProductDto {
+  // Product id.
+  fixed64 id = 1;
+
+  // Product name.
+  string name = 2;
+
+  // Product price.
+  CustomTypes.DecimalValue price = 3;
+
+  // Restaurant id.
+  fixed64 restaurant_id = 4;
+}
