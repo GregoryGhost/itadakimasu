@@ -11,7 +11,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 
-var productsApiAddress = Environment.GetEnvironmentVariable("PRODUCTS_API_ADDRESS")
+var productsApiAddress = Environment.GetEnvironmentVariable("API_PRODUCTS_ADDRESS")
                        ?? builder.Configuration.GetSection("Api").GetSection("ProductsAddress").Value;
 
 builder.Services.AddSingleton(

@@ -66,7 +66,7 @@
   &lt;Assembly Path="C:\Users\kulak\.nuget\packages\grpc.aspnetcore.server\2.46.0\lib\net6.0\Grpc.AspNetCore.Server.dll" /&gt;&#xD;
 &lt;/AssemblyExplorer&gt;</s:String>
 	<s:String x:Key="/Default/Environment/Hierarchy/Build/BuildTool/DotNetCliExePath/@EntryValue">C:\Program Files\dotnet\dotnet.exe</s:String>
-	<s:Int64 x:Key="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue">3357</s:Int64>
+	<s:Int64 x:Key="/Default/Environment/Hierarchy/GeneratedFilesCacheKey/Timestamp/@EntryValue">3612</s:Int64>
 	<s:Boolean x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=9BC4DD84CB4D2C4BAD9557002337A257/@KeyIndexDefined">True</s:Boolean>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=9BC4DD84CB4D2C4BAD9557002337A257/AbsolutePath/@EntryValue">C:\Users\kulak\RiderProjects\eggplant\Lagalike.sln.DotSettings</s:String>
 	<s:String x:Key="/Default/Environment/InjectedLayers/FileInjectedLayer/=9BC4DD84CB4D2C4BAD9557002337A257/RelativePath/@EntryValue">..\Lagalike.sln.DotSettings</s:String>

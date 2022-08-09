@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 
 using Grpc.Net.Client;
 
+using Itadakimasu.API.ProductsSynchronizationSaga.Types.Configs;
+
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
@@ -16,7 +18,7 @@ using Microsoft.AspNetCore.Builder;
 var builder = WebApplication.CreateBuilder(args);
 
 
-var rabbitMqConfig = GetRabbitMqConfig();
+var rabbitMqConfig = ConfigHelper.GetRabbitMqConfig();
 
 builder.Services.AddMassTransit(
     x =>
@@ -51,7 +53,7 @@ builder.Services.AddMassTransit(
             });
     });
 
-var microservicesConfig = GetMicroservicesConfig();
+var microservicesConfig = ConfigHelper.GetMicroservicesConfig();
 
 builder.Services.AddSingleton(
     s =>
@@ -79,32 +81,3 @@ var app = builder.Build();
 var env = app.Environment;
 
 app.Run();
-
-static RabbitMqConfig GetRabbitMqConfig()
-{
-    Environment.GetEnvironmentVariable("PRODUCTS_API_ADDRESS")
-        ?? builder.Configuration.GetSection("Api").GetSection("ProductsAddress").Value;
-
-    return null;
-}
-
-static DependentMicroservicesAddresses GetMicroservicesConfig()
-{
-    Environment.GetEnvironmentVariable("PRODUCTS_API_ADDRESS")
-        ?? builder.Configuration.GetSection("Api").GetSection("ProductsAddress").Value;
-
-    return null;
-}
-
-public record RabbitMqConfig
-{
-    public string Address { get; init; }
-    public string Login { get; init; }
-    public string Password { get; init; }
-}
-
-public record DependentMicroservicesAddresses
-{
-    public string ApiProductsAggregatorAddress { get; init; }
-    public string ApiProductsSynchronizerAddress { get; init; }
-}

@@ -4,7 +4,12 @@
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "environmentVariables": {
-        "DOTNET_ENVIRONMENT": "Development"
+        "DOTNET_ENVIRONMENT": "Development",
+        "RABBITMQ_ADDRESS": "",
+        "RABBITMQ_LOGIN": "",
+        "RABBITMQ_PASSWORD": "",
+        "API_PRODUCTS_AGGREGATOR_ADDRESS": "",
+        "API_PRODUCTS_SYNCHRONIZER_ADDRESS": ""
       }
     }
   }

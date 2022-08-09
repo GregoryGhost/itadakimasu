@@ -16,6 +16,101 @@ services:
     networks:
       - api-network
 
+  rabbitmq:
+    image: masstransit/rabbitmq:latest
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+     - "15692:15692"
+
+  api_products_synchronizer_saga:
+    depends_on:
+    db:
+      condition: service_healthy
+    # TODO: replace curl on dotnet tools for health checking
+    # healthcheck:
+    #   test: curl --silent --fail http://api_products:80/health || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    build:
+      context: .
+      dockerfile: Dockerfile.products_synchronizer_saga
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      RABBITMQ_ADDRESS: "5672"
+      RABBITMQ_LOGIN: "guest"
+      RABBITMQ_PASSWORD: "guest"
+      API_PRODUCTS_AGGREGATOR_ADDRESS: "http://api_products_synchronizer:80/"
+      API_PRODUCTS_SYNCHRONIZER_ADDRESS: "http://api_products_synchronizer:80/"
+    ports:
+      - "5224:80"
+      - "5225:443"
+    networks:
+      - api-network
+    volumes:
+
+  api_products_synchronizer:
+    depends_on:
+    db:
+      condition: service_healthy
+    # TODO: replace curl on dotnet tools for health checking
+    # healthcheck:
+    #   test: curl --silent --fail http://api_products:80/health || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    build:
+      context: .
+      dockerfile: Dockerfile.products_synchronizer
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      API_PRODUCTS: "http://api_products:80/"
+    ports:
+      - "5222:80"
+      - "5223:443"
+    networks:
+      - api-network
+    volumes:
+      - ./dev-certs/:/https:ro
+
+  api_products_aggregator:
+    depends_on:
+    db:
+      condition: service_healthy
+    # TODO: replace curl on dotnet tools for health checking
+    # healthcheck:
+    #   test: curl --silent --fail http://api_products:80/health || exit 1
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 3
+    #   start_period: 30s
+    build:
+      context: .
+      dockerfile: Dockerfile.products_aggregator
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
+      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
+      ASPNETCORE_URLS: "http://+:80;https://+:443"
+      ASPNETCORE_ENVIRONMENT: "Development"
+      API_PRODUCTS: "http://api_products:80/"
+    ports:
+      - "5222:80"
+      - "5223:443"
+    networks:
+      - api-network
+    volumes:
+      - ./dev-certs/:/https:ro
+
+
   api_products:
     depends_on:
       db:

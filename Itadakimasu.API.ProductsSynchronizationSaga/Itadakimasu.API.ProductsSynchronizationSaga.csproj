@@ -17,8 +17,4 @@
     <ItemGroup>
       <ProjectReference Include="..\Itadakimasu.Core.Protos\Itadakimasu.Core.Protos.csproj" />
     </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="Types\Configs" />
-    </ItemGroup>
 </Project>
