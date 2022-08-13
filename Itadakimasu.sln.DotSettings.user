@@ -89,6 +89,7 @@
 	<s:String x:Key="/Default/Profilers/Common/ConfigurationsStore/SelectedProfileConfigurationId/=Net/@EntryIndexedValue"></s:String>
 	<s:Boolean x:Key="/Default/Profilers/Common/ConfigurationsStore/SelectedProfileConfigurationId/=Net/@EntryIndexRemoved">True</s:Boolean>
 	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=be443d73_002D2d1b_002D4e4c_002D817f_002D267f3574ce9e_0023Itadakimasu_002EOrder_002ETests/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/UnloadedProject/UnloadedProjects/=d42881da_002Dc4de_002D40b2_002D947a_002D4c201246b097_0023Itadakimasu_002EProductsSynchronizer_002ETests/@EntryIndexedValue">True</s:Boolean>
 	
 	
 	

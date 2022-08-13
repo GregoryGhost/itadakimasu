@@ -10,14 +10,15 @@ services:
       context: .
       dockerfile: ./Itadakimasu.API.Gateway/Dockerfile
     environment:
-      MERCHANDISER_ADDRESS: "http://api_products:80"
+      API_PRODUCTS_ADDRESS: ${API_PRODUCTS_ADDRESS}
     ports:
       - "5243:80"
+      - "5244:443"
     networks:
       - api-network
 
   rabbitmq:
-    image: masstransit/rabbitmq:latest
+    image: "masstransit/rabbitmq:${RABBITMQ_TAG}"
     ports:
      - "5672:5672"
      - "15672:15672"
@@ -25,8 +26,8 @@ services:
 
   api_products_synchronizer_saga:
     depends_on:
-    db:
-      condition: service_healthy
+      db:
+        condition: service_healthy
     # TODO: replace curl on dotnet tools for health checking
     # healthcheck:
     #   test: curl --silent --fail http://api_products:80/health || exit 1
@@ -38,26 +39,25 @@ services:
       context: .
       dockerfile: ./Itadakimasu.API.ProductsSynchronizationSaga/Dockerfile
     environment:
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
-      ASPNETCORE_URLS: "http://+:80;https://+:443"
-      ASPNETCORE_ENVIRONMENT: "Development"
-      RABBITMQ_ADDRESS: "5672"
-      RABBITMQ_LOGIN: "guest"
-      RABBITMQ_PASSWORD: "guest"
-      API_PRODUCTS_AGGREGATOR_ADDRESS: "http://api_products_synchronizer:80/"
-      API_PRODUCTS_SYNCHRONIZER_ADDRESS: "http://api_products_synchronizer:80/"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      RABBITMQ_ADDRESS: ${RABBITMQ_ADDRESS}
+      RABBITMQ_LOGIN: ${RABBITMQ_LOGIN}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      API_PRODUCTS_AGGREGATOR_ADDRESS: ${API_PRODUCTS_AGGREGATOR_ADDRESS}
+      API_PRODUCTS_SYNCHRONIZER_ADDRESS: ${API_PRODUCTS_SYNCHRONIZER_ADDRESS}
     ports:
       - "5224:80"
       - "5225:443"
     networks:
       - api-network
-    volumes:
 
   api_products_synchronizer:
     depends_on:
-    db:
-      condition: service_healthy
+      db:
+        condition: service_healthy
     # TODO: replace curl on dotnet tools for health checking
     # healthcheck:
     #   test: curl --silent --fail http://api_products:80/health || exit 1
@@ -69,23 +69,23 @@ services:
       context: .
       dockerfile: ./Itadakimasu.API.ProductsSynchronizer/Dockerfile
     environment:
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
-      ASPNETCORE_URLS: "http://+:80;https://+:443"
-      ASPNETCORE_ENVIRONMENT: "Development"
-      API_PRODUCTS: "http://api_products:80/"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      API_PRODUCTS_ADDRESS: ${API_PRODUCTS_ADDRESS}
     ports:
       - "5222:80"
       - "5223:443"
     networks:
       - api-network
     volumes:
-      - ./dev-certs/:/https:ro
+      - ./Configs/DevCerts/:/https:ro
 
   api_products_aggregator:
     depends_on:
-    db:
-      condition: service_healthy
+      db:
+        condition: service_healthy
     # TODO: replace curl on dotnet tools for health checking
     # healthcheck:
     #   test: curl --silent --fail http://api_products:80/health || exit 1
@@ -97,18 +97,17 @@ services:
       context: .
       dockerfile: ./Itadakimasu.API.ProductsAggregator/Dockerfile
     environment:
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
-      ASPNETCORE_URLS: "http://+:80;https://+:443"
-      ASPNETCORE_ENVIRONMENT: "Development"
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
     ports:
       - "5220:80"
       - "5221:443"
     networks:
       - api-network
     volumes:
-      - ./dev-certs/:/https:ro
-
+      - ./Configs/DevCerts/:/https:ro
 
   api_products:
     depends_on:
@@ -125,21 +124,21 @@ services:
       context: .
       dockerfile: ./Itadakimasu.API.Products/Dockerfile
     environment:
-      DB_CONNECTION_STRING: "Username=postgres;Password=mysecretpassword;host=db;Port=5432;Database=products;Integrated Security=true;Pooling=true;"
-      ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
-      ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
-      ASPNETCORE_URLS: "http://+:80;https://+:443"
-      ASPNETCORE_ENVIRONMENT: "Development"
+      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
     ports:
       - "5218:80"
       - "5219:443"
     networks:
       - api-network
     volumes:
-      - ./dev-certs/:/https:ro
+      - ./Configs/DevCerts/:/https:ro
 
   db:
-    image: postgres:latest
+    image: postgres:${POSTGRES_TAG}
     restart: always
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
@@ -147,14 +146,14 @@ services:
       timeout: 5s
       retries: 5
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=mysecretpassword
-      - POSTGRES_DB=postgres
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
     user: postgres
     ports:
       - "5432:5432"
     volumes:
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./Configs/Database/init.sql:/docker-entrypoint-initdb.d/init.sql
       - "postgresql-data:/var/lib/postgresql/data"
     networks:
       - api-network
