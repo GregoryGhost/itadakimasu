@@ -1,20 +1,16 @@
-﻿FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
-WORKDIR /app
-EXPOSE 80
-EXPOSE 443
-
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+﻿FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["GrpcService/GrpcService.csproj", "GrpcService/"]
-RUN dotnet restore "GrpcService/GrpcService.csproj"
+COPY ["Itadakimasu.Core.Protos/Itadakimasu.Core.Protos.csproj", "Itadakimasu.Core.Protos/"]
+COPY ["Itadakimasu.API.ProductsSynchronizer/Itadakimasu.API.ProductsSynchronizer.csproj", "Itadakimasu.API.ProductsSynchronizer/"]
+RUN dotnet restore "Itadakimasu.API.ProductsSynchronizer/Itadakimasu.API.ProductsSynchronizer.csproj"
 COPY . .
-WORKDIR "/src/GrpcService"
-RUN dotnet build "GrpcService.csproj" -c Release -o /app/build
+WORKDIR "/src/Itadakimasu.API.ProductsSynchronizer"
+RUN dotnet build "Itadakimasu.API.ProductsSynchronizer.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "GrpcService.csproj" -c Release -o /app/publish
+RUN dotnet publish "Itadakimasu.API.ProductsSynchronizer.csproj" -c Release -o /app/publish
 
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "GrpcService.dll"]
+ENTRYPOINT ["dotnet", "Itadakimasu.API.ProductsSynchronizer.dll"]

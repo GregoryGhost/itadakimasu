@@ -1,5 +1,7 @@
 namespace Itadakimasu.API.Order.Services;
 
+using Greet.V1;
+
 using Grpc.Core;
 
 public class GreeterService : Greeter.GreeterBase

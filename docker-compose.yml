@@ -8,7 +8,7 @@ services:
         condition: service_healthy
     build:
       context: .
-      dockerfile: Dockerfile.gateway
+      dockerfile: ./Itadakimasu.API.Gateway/Dockerfile
     environment:
       MERCHANDISER_ADDRESS: "http://api_products:80"
     ports:
@@ -36,7 +36,7 @@ services:
     #   start_period: 30s
     build:
       context: .
-      dockerfile: Dockerfile.products_synchronizer_saga
+      dockerfile: ./Itadakimasu.API.ProductsSynchronizationSaga/Dockerfile
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
@@ -67,7 +67,7 @@ services:
     #   start_period: 30s
     build:
       context: .
-      dockerfile: Dockerfile.products_synchronizer
+      dockerfile: ./Itadakimasu.API.ProductsSynchronizer/Dockerfile
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
@@ -95,16 +95,15 @@ services:
     #   start_period: 30s
     build:
       context: .
-      dockerfile: Dockerfile.products_aggregator
+      dockerfile: ./Itadakimasu.API.ProductsAggregator/Dockerfile
     environment:
       ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
       ASPNETCORE_Kestrel__Certificates__Default__Path: "/https/aspnetapp.pfx"
       ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_ENVIRONMENT: "Development"
-      API_PRODUCTS: "http://api_products:80/"
     ports:
-      - "5222:80"
-      - "5223:443"
+      - "5220:80"
+      - "5221:443"
     networks:
       - api-network
     volumes:
@@ -124,7 +123,7 @@ services:
     #   start_period: 30s
     build:
       context: .
-      dockerfile: Dockerfile.products
+      dockerfile: ./Itadakimasu.API.Products/Dockerfile
     environment:
       DB_CONNECTION_STRING: "Username=postgres;Password=mysecretpassword;host=db;Port=5432;Database=products;Integrated Security=true;Pooling=true;"
       ASPNETCORE_Kestrel__Certificates__Default__Password: "ASbL5k!^k^Fsv]e@"
@@ -132,8 +131,8 @@ services:
       ASPNETCORE_URLS: "http://+:80;https://+:443"
       ASPNETCORE_ENVIRONMENT: "Development"
     ports:
-      - "5220:80"
-      - "5221:443"
+      - "5218:80"
+      - "5219:443"
     networks:
       - api-network
     volumes:
