@@ -2,6 +2,8 @@
 
 using System.Diagnostics;
 
+using DtoTypes;
+
 using Google.Protobuf.WellKnownTypes;
 
 using Grpc.Core;

@@ -2,6 +2,8 @@
 
 using System.Runtime.CompilerServices;
 
+using DtoTypes;
+
 using Itadakimasu.API.ProductsAggregator.Models;
 using Itadakimasu.ProductsAggregator.DAL;
 
