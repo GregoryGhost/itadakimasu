@@ -1,10 +1,18 @@
-version: '3'
+version: '3.9'
+
+volumes:
+  postgresql-data:
+
+networks:
+  api-network:
+    driver: bridge
 
 services:
   api_gateway:
     depends_on:
-      # api_products:
-      db:
+      api_products:
+        condition: service_started
+      rabbitmq:
         condition: service_healthy
     build:
       context: .
@@ -19,14 +27,44 @@ services:
 
   rabbitmq:
     image: "masstransit/rabbitmq:${RABBITMQ_TAG}"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      retries: 3
     ports:
      - "5672:5672"
      - "15672:15672"
      - "15692:15692"
 
+  db:
+    image: postgres:${POSTGRES_TAG}
+    restart: always
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    user: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./Configs/Database/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - "postgresql-data:/var/lib/postgresql/data"
+    networks:
+      - api-network
+
   api_products_synchronizer_saga:
     depends_on:
-      db:
+      api_products_aggregator:
+        condition: service_started
+      api_products_synchronizer:
+        condition: service_started
+      rabbitmq:
         condition: service_healthy
     # TODO: replace curl on dotnet tools for health checking
     # healthcheck:
@@ -56,8 +94,8 @@ services:
 
   api_products_synchronizer:
     depends_on:
-      db:
-        condition: service_healthy
+      api_products:
+        condition: service_started
     # TODO: replace curl on dotnet tools for health checking
     # healthcheck:
     #   test: curl --silent --fail http://api_products:80/health || exit 1
@@ -136,31 +174,3 @@ services:
       - api-network
     volumes:
       - ./Configs/DevCerts/:/https:ro
-
-  db:
-    image: postgres:${POSTGRES_TAG}
-    restart: always
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-    environment:
-      POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
-    user: postgres
-    ports:
-      - "5432:5432"
-    volumes:
-      - ./Configs/Database/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - "postgresql-data:/var/lib/postgresql/data"
-    networks:
-      - api-network
-
-volumes:
-  postgresql-data:
-
-networks:
-  api-network:
-    driver: bridge
