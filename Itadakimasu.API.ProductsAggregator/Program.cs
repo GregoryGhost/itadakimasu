@@ -1,8 +1,13 @@
-﻿using System.Threading.Channels;
+using System.Threading.Channels;
+
+using AngleSharp;
+using AngleSharp.Html.Parser;
 
 using Itadakimasu.API.ProductsAggregator.Models;
 using Itadakimasu.API.ProductsAggregator.Services;
 using Itadakimasu.ProductsAggregator.DAL;
+
+using Microsoft.EntityFrameworkCore;
 
 using ProductScrapper.Contracts;
 using ProductScrapper.Services;
@@ -15,7 +20,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
-builder.Services.AddSingleton<MrTakoScrapper>();
+
+AddDbContext(builder);
+
+AddMrTakoScrapper(builder);
 
 AddSynchronizationChannel(builder);
 AddScrappedProductsChannel(builder);
@@ -80,4 +88,44 @@ static void AddScrappedProductsChannel(WebApplicationBuilder builder)
     };
     builder.Services.AddSingleton(scrappedWriter);
     builder.Services.AddSingleton(scrappedReader);
+}
+
+static void AddMrTakoScrapper(WebApplicationBuilder builder)
+{
+    builder.Services.AddHttpClient("mr_tako_client").AddTypedClient<MrTakoClient>();
+    var scrappingSettings = new ScrappingSettings
+    {
+        ScrappingRestaurantUrls = new[]//TODO: init from db and migration
+        {
+            "https://mistertako.ru/menyu/wok",
+            "https://mistertako.ru/menyu/wok?page=2",
+            "https://mistertako.ru/menyu/bluda-fri",
+            "https://mistertako.ru/menyu/deserty",
+            "https://mistertako.ru/menyu/dobavki",
+            "https://mistertako.ru/menyu/napitki",
+            "https://mistertako.ru/menyu/osnovnye-bluda",
+            "https://mistertako.ru/menyu/rolly",
+            "https://mistertako.ru/menyu/rolly?page=2",
+            "https://mistertako.ru/menyu/salaty",
+            "https://mistertako.ru/menyu/supy"
+        },
+        ProductsScrapperType = ProductsScrapperType.MrTako
+    };
+    builder.Services.AddSingleton(scrappingSettings);
+    builder.Services.AddSingleton<MrTakoParser>();
+    builder.Services.AddSingleton<HtmlParser>();
+    builder.Services.AddSingleton<MrTakoScrapper>();
+}
+
+static void AddDbContext(WebApplicationBuilder builder)
+{
+    var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING");
+
+    if (string.IsNullOrEmpty(connectionString))
+    {
+        throw new ArgumentOutOfRangeException(nameof(connectionString), "Provide database connection string.");
+    }
+    
+    builder.Services.AddDbContext<AppDbContext>(
+        options => options.UseNpgsql(connectionString));
 }
