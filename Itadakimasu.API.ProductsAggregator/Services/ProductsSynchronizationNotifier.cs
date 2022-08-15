@@ -30,7 +30,7 @@ public class ProductsSynchronizationNotifier
     
     public async IAsyncEnumerable<SynchronizedRestaurantProductsRequest> GetNotificationAsync([EnumeratorCancellation] CancellationToken cancellationToken = default)
     {
-        await foreach (var scrappedResult in _productsResultSynchronizationReader.ReadAllAsync(cancellationToken))
+        await foreach (var scrappedResult in _productsResultSynchronizationReader.ChannelReader.ReadAllAsync(cancellationToken))
         {
             var savedProductsRequest = await TrySaveProductsSynchronizationResultAsync(scrappedResult, cancellationToken);
             if (savedProductsRequest is null)

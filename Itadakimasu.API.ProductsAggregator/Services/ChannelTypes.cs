@@ -5,18 +5,22 @@ using System.Threading.Channels;
 using Itadakimasu.API.ProductsAggregator.Models;
 using Itadakimasu.ProductsAggregator.DAL;
 
-public abstract class ProductsResultSynchronizationWriter : ChannelWriter<SynchronizingScrappedResult>
+public sealed class ProductsResultSynchronizationWriter
 {
+    public ChannelWriter<SynchronizingScrappedResult> ChannelWriter { get; init; } = null!;
 }
 
-public abstract class ProductsResultSynchronizationReader : ChannelReader<SynchronizingScrappedResult>
+public sealed class ProductsResultSynchronizationReader
 {
+    public ChannelReader<SynchronizingScrappedResult> ChannelReader { get; init; } = null!;
 }
 
-public abstract class ProductsSynchronizationWriter : ChannelWriter<SynchronizatingRestaurant>
+public sealed class ProductsSynchronizationWriter
 {
+    public ChannelWriter<SynchronizatingRestaurant> ChannelWriter { get; init; } = null!;
 }
 
-public abstract class ProductsSynchronizationReader : ChannelReader<SynchronizatingRestaurant>
+public sealed class ProductsSynchronizationReader
 {
+    public ChannelReader<SynchronizatingRestaurant> ChannelReader { get; init; } = null!;
 }

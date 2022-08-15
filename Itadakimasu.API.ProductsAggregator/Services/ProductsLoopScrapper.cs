@@ -27,7 +27,7 @@ public class ProductsLoopScrapper : IHostedService
     /// <inheritdoc />
     public async Task StartAsync(CancellationToken cancellationToken)
     {
-        await foreach (var request in _synchronizationReader.ReadAllAsync(cancellationToken))
+        await foreach (var request in _synchronizationReader.ChannelReader.ReadAllAsync(cancellationToken))
         {
             if (TryGetScrapperType(request, out var scrapperType))
                 continue;
@@ -38,14 +38,14 @@ public class ProductsLoopScrapper : IHostedService
                 ScrappedResults = scrappedResults,
                 SynchronizingRequestId = request.Id
             };
-            await _resultWriter.WriteAsync(synchronizingScrappedResult, cancellationToken);
+            await _resultWriter.ChannelWriter.WriteAsync(synchronizingScrappedResult, cancellationToken);
         }
     }
 
     /// <inheritdoc />
     public Task StopAsync(CancellationToken cancellationToken)
     {
-        return _synchronizationReader.Completion;
+        return _synchronizationReader.ChannelReader.Completion;
     }
 
     private bool TryGetScrapperType(SynchronizatingRestaurant request, out ProductsScrapperType scrapperType)

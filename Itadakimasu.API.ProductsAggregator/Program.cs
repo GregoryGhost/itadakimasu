@@ -17,17 +17,8 @@ builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 builder.Services.AddSingleton<MrTakoScrapper>();
 
-var synchronizationChannel = Channel.CreateUnbounded<SynchronizatingRestaurant>();
-var synchronizationWriter = (ProductsSynchronizationWriter) synchronizationChannel.Writer;
-var synchronizationReader = (ProductsSynchronizationReader) synchronizationChannel.Reader;
-builder.Services.AddSingleton(synchronizationWriter);
-builder.Services.AddSingleton(synchronizationReader);
-
-var scrappedChannel = Channel.CreateUnbounded<SynchronizingScrappedResult>();
-var scrappedWriter = (ProductsResultSynchronizationWriter) scrappedChannel.Writer;
-var scrappedReader = (ProductsResultSynchronizationReader) scrappedChannel.Reader;
-builder.Services.AddSingleton(scrappedWriter);
-builder.Services.AddSingleton(scrappedReader);
+AddSynchronizationChannel(builder);
+AddScrappedProductsChannel(builder);
 
 builder.Services.AddSingleton<ProductsSynchronizationNotifier>();
 
@@ -60,3 +51,33 @@ if (env.IsDevelopment())
     app.MapGrpcReflectionService();
 
 app.Run();
+
+static void AddSynchronizationChannel(WebApplicationBuilder builder)
+{
+    var synchronizationChannel = Channel.CreateUnbounded<SynchronizatingRestaurant>();
+    var synchronizationWriter = new ProductsSynchronizationWriter
+    {
+        ChannelWriter = synchronizationChannel.Writer
+    };
+    var synchronizationReader = new ProductsSynchronizationReader
+    {
+        ChannelReader = synchronizationChannel.Reader
+    };
+    builder.Services.AddSingleton(synchronizationWriter);
+    builder.Services.AddSingleton(synchronizationReader);
+}
+
+static void AddScrappedProductsChannel(WebApplicationBuilder builder)
+{
+    var scrappedChannel = Channel.CreateUnbounded<SynchronizingScrappedResult>();
+    var scrappedWriter = new ProductsResultSynchronizationWriter
+    {
+        ChannelWriter = scrappedChannel.Writer
+    };
+    var scrappedReader = new ProductsResultSynchronizationReader
+    {
+        ChannelReader = scrappedChannel.Reader
+    };
+    builder.Services.AddSingleton(scrappedWriter);
+    builder.Services.AddSingleton(scrappedReader);
+}

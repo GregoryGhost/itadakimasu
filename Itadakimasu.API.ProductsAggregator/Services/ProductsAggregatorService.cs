@@ -64,7 +64,7 @@ public class ProductsAggregatorService : ProductsProxy.ProductsProxyBase
         Debug.Assert(foundRestaurant != null, nameof(foundRestaurant) + " != null");
         var (created, newRequest) = await CreateNewSynchronizationRestaurantRequest(foundRestaurant);
 
-        await _productsSynchronizationWriter.WriteAsync(newRequest);
+        await _productsSynchronizationWriter.ChannelWriter.WriteAsync(newRequest);
 
         return created;
     }
