@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["init_migrations.sh", "Itadakimasu.API.Products/"]
+COPY ["../Configs/Database/init_migrations.sh", "Itadakimasu.API.Products/"]
 COPY ["Itadakimasu.Core.DAL/Itadakimasu.Core.DAL.csproj", "Itadakimasu.Core.DAL/"]
 COPY ["Itadakimasu.Core.Protos/Itadakimasu.Core.Protos.csproj", "Itadakimasu.Core.Protos/"]
 COPY ["Itadakimasu.Products.DAL/Itadakimasu.Products.DAL.csproj", "Itadakimasu.Products.DAL/"]
