@@ -28,7 +28,7 @@ AddMrTakoScrapper(builder);
 AddSynchronizationChannel(builder);
 AddScrappedProductsChannel(builder);
 
-builder.Services.AddSingleton<ProductsSynchronizationNotifier>();
+builder.Services.AddScoped<ProductsSynchronizationNotifier>();
 
 builder.Services.AddHostedService<ProductsLoopScrapper>();
 
@@ -92,7 +92,6 @@ static void AddScrappedProductsChannel(WebApplicationBuilder builder)
 
 static void AddMrTakoScrapper(WebApplicationBuilder builder)
 {
-    builder.Services.AddHttpClient("mr_tako_client").AddTypedClient<MrTakoClient>();
     var scrappingSettings = new ScrappingSettings
     {
         ScrappingRestaurantUrls = new[]//TODO: init from db and migration
@@ -112,6 +111,7 @@ static void AddMrTakoScrapper(WebApplicationBuilder builder)
         ProductsScrapperType = ProductsScrapperType.MrTako
     };
     builder.Services.AddSingleton(scrappingSettings);
+    builder.Services.AddHttpClient<MrTakoClient>();
     builder.Services.AddSingleton<MrTakoParser>();
     builder.Services.AddSingleton<HtmlParser>();
     builder.Services.AddSingleton<MrTakoScrapper>();

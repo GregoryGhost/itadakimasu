@@ -40,7 +40,7 @@ public class MrTakoScrapRealWebsiteTestCases : TestCases<ExpectedProducts, Scrap
         };
         var htmlParser = new HtmlParser();
         var productParser = new MrTakoParser(htmlParser);
-        var httpClient = new HttpClient();
+        var httpClient = new MrTakoClient();
         var scrapper = new MrTakoScrapper(httpClient, settings, productParser);
 
         return scrapper;

@@ -93,7 +93,7 @@ public class MrTakoScrapTestDataTestCases : TestCases<ExpectedProducts, Scrappin
         }
     }
 
-    private class MockedHttpClient : HttpClient
+    private class MockedHttpClient : MrTakoClient
     {
         private static readonly MockedHttpMessageHandler HttpMessageHandler = new();
 

@@ -132,7 +132,7 @@ public class MrTakoParser : IProductHtmlParser
 public class MrTakoScrapper : ProductWebSiteScrapper
 {
     // ReSharper disable once SuggestBaseTypeForParameterInConstructor
-    public MrTakoScrapper(HttpClient httpClient, ScrappingSettings scrappingSettings, MrTakoParser productParser)
+    public MrTakoScrapper(MrTakoClient httpClient, ScrappingSettings scrappingSettings, MrTakoParser productParser)
         : base(scrappingSettings, productParser, httpClient)
     {
     }
