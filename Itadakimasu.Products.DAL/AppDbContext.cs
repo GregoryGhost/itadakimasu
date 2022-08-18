@@ -10,4 +10,6 @@ public class AppDbContext : DbContext
     }
 
     public DbSet<Product> Products { get; set; } = null!;
+
+    public DbSet<Restaurant> Restaurants { get; set; } = null!;
 }

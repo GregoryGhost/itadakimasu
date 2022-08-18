@@ -8,7 +8,7 @@ public class Product : BaseEntity
 
     public decimal Price { get; set; }
 
-    public Restaurant Restaurant { get; set; } = null!;
+    public Restaurant? Restaurant { get; set; } = null!;
 
-    public long RestaurantId { get; set; }
+    public long? RestaurantId { get; set; }
 }

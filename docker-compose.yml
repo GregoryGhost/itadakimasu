@@ -140,7 +140,7 @@ services:
       context: .
       dockerfile: ./Itadakimasu.API.ProductsAggregator/Dockerfile
     environment:
-      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+      DB_CONNECTION_STRING: ${API_PRODUCTS_AGGREGATOR_DB_CONNECTION_STRING}
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
       ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
       ASPNETCORE_URLS: ${ASPNETCORE_URLS}
@@ -168,7 +168,7 @@ services:
       context: .
       dockerfile: ./Itadakimasu.API.Products/Dockerfile
     environment:
-      DB_CONNECTION_STRING: ${DB_CONNECTION_STRING}
+      DB_CONNECTION_STRING: ${API_PRODUCTS_DB_CONNECTION_STRING}
       ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
       ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
       ASPNETCORE_URLS: ${ASPNETCORE_URLS}
