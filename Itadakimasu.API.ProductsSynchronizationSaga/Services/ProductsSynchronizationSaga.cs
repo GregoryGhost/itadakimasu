@@ -31,6 +31,18 @@
                 x => 
                     x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RestaurantId)
                      .SelectId(y => NewId.NextGuid()));
+            Event(
+                () => ScrappedRestaurantProducts,
+                x =>
+                    x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
+            Event(
+                () => GetSynchronizedRestaurant,
+                x =>
+                    x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
+            Event(
+                () => SynchronizeRestaurant,
+                x =>
+                    x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
 
             Initially(
 
@@ -114,25 +126,23 @@
             //     );
         }
 
-        private State SynchronizedRestaurantProducts { get; init; } = null!;
+        public State SynchronizedRestaurantProducts { get; init; } = null!;
 
-        private State CreatedScrappingRestaurantProductsRequest { get; init; } = null!;
+        public State CreatedScrappingRestaurantProductsRequest { get; init; } = null!;
 
-        private State Failed { get; init; } = null!;
+        public State Failed { get; init; } = null!;
 
-        private State SynchronizedRestaurant { get; init; } = null!;
+        public State SynchronizedRestaurant { get; init; } = null!;
 
-        private State SynchronizingRestaurant { get; init; } = null!;
+        public State SynchronizingRestaurant { get; init; } = null!;
 
-        private Event<SynchronizeRestaurantProductsRequest> SynchronizeRestaurantProducts { get; init; } = null!;
+        public Event<SynchronizeRestaurantProductsRequest> SynchronizeRestaurantProducts { get; init; } = null!;
 
-        private Event<CreatedSynchronizationRestaurantRequest> CreatedScrappingRestaurantRequest { get; init; } = null!;
+        public Event<SynchronizedRestaurantProductsRequest> ScrappedRestaurantProducts { get; init; } = null!;
 
-        private Event<SynchronizedRestaurantProductsRequest> ScrappedRestaurantProducts { get; init; } = null!;
+        public Event<SynchronizedData> GetSynchronizedRestaurant { get; init; } = null!;
 
-        private Event<SynchronizedData> GetSynchronizedRestaurant { get; init; } = null!;
-
-        private Event<SynchronizingData> SynchronizeRestaurant { get; init; } = null!;
+        public Event<SynchronizingData> SynchronizeRestaurant { get; init; } = null!;
 
         private static async Task RespondFromSagaAsync(SagaConsumeContext<ProductsSynchronizationSagaState> context, string error)
         {

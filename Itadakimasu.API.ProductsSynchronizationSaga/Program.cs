@@ -78,6 +78,4 @@ builder.Services.AddSingleton(
 
 var app = builder.Build();
 
-var env = app.Environment;
-
 app.Run();

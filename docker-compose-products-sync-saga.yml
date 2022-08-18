@@ -1,0 +1,43 @@
+version: '3.9'
+
+networks:
+  api-network:
+    driver: bridge
+
+services:
+  rabbitmq:
+    image: "masstransit/rabbitmq:${RABBITMQ_TAG}"
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 30s
+      timeout: 30s
+      start_period: 10s
+      retries: 3
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+     - "15692:15692"
+    networks:
+      - api-network
+
+  saga:
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    build:
+      context: .
+      dockerfile: ./Itadakimasu.API.ProductsSynchronizationSaga/Dockerfile
+    environment:
+      ASPNETCORE_Kestrel__Certificates__Default__Password: ${ASPNETCORE_Kestrel__Certificates__Default__Password}
+      ASPNETCORE_Kestrel__Certificates__Default__Path: ${ASPNETCORE_Kestrel__Certificates__Default__Path}
+      ASPNETCORE_URLS: ${ASPNETCORE_URLS}
+      ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT}
+      RABBITMQ_ADDRESS: ${RABBITMQ_ADDRESS}
+      RABBITMQ_LOGIN: ${RABBITMQ_LOGIN}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      API_PRODUCTS_AGGREGATOR_ADDRESS: ${API_PRODUCTS_AGGREGATOR_ADDRESS}
+      API_PRODUCTS_SYNCHRONIZER_ADDRESS: ${API_PRODUCTS_SYNCHRONIZER_ADDRESS}
+    networks:
+      - api-network
+    volumes:
+      - ./Configs/DevCerts/:/https:ro

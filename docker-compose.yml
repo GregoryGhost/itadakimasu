@@ -32,10 +32,13 @@ services:
       interval: 30s
       timeout: 30s
       retries: 3
+      start_period: 10s
     ports:
      - "5672:5672"
      - "15672:15672"
      - "15692:15692"
+    networks:
+      - api-network
 
   db:
     image: postgres:${POSTGRES_TAG}
@@ -91,6 +94,8 @@ services:
       - "5225:443"
     networks:
       - api-network
+    volumes:
+      - ./Configs/DevCerts/:/https:ro
 
   api_products_synchronizer:
     depends_on:
