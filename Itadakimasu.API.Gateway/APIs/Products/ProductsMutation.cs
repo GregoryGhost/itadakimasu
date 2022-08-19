@@ -1,5 +1,7 @@
 ﻿namespace Itadakimasu.API.Gateway.APIs.Products;
 
+using Itadakimasu.API.Gateway.DTOs.Products;
+
 using JetBrains.Annotations;
 
 using Merchandiser.V1;
@@ -120,45 +122,4 @@ public class ProductsMutation
             Price = dto.Price
         };
     }
-}
-
-public record DeletingProduct : ProductInfoId
-{
-}
-
-public record DeletedProduct : ProductInfoId
-{
-}
-
-public record UpdatedProduct : UpdatingProduct
-{
-}
-
-public record UpdatingProduct
-{
-    [GraphQLType(typeof(UnsignedLongType))]
-    [ID]
-    public ulong Id { get; init; }
-
-    public string Name { get; init; } = null!;
-
-    public decimal Price { get; init; }
-}
-
-public record CreatingProductDto
-{
-    public string Name { get; init; } = null!;
-
-    public decimal Price { get; init; }
-}
-
-public record CreatedProductDto
-{
-    [GraphQLType(typeof(UnsignedLongType))]
-    [ID]
-    public ulong Id { get; init; }
-
-    public string Name { get; init; } = null!;
-
-    public decimal Price { get; init; }
 }

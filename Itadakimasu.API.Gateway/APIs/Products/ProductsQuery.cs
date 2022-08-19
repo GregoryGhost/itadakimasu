@@ -2,6 +2,8 @@
 
 using HotChocolate.Types.Pagination;
 
+using Itadakimasu.API.Gateway.DTOs.Products;
+
 using JetBrains.Annotations;
 
 using Merchandiser.V1;
@@ -139,32 +141,4 @@ public class ProductsQuery
             Id = productInfoId.Id
         };
     }
-}
-
-public record ProductCardDto
-{
-    [GraphQLType(typeof(UnsignedLongType))]
-    public ulong Id { get; init; }
-
-    public bool IsNotFound { get; init; }
-
-    public string Name { get; init; } = null!;
-
-    public decimal Price { get; init; }
-}
-
-public record ProductInfoId
-{
-    [GraphQLType(typeof(UnsignedLongType))]
-    public ulong Id { get; init; }
-}
-
-public record ProductInfoDto
-{
-    [GraphQLType(typeof(UnsignedLongType))]
-    public ulong Id { get; init; }
-
-    public string Name { get; init; } = null!;
-
-    public decimal Price { get; init; }
 }
