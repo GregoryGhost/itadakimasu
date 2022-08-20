@@ -1,5 +1,6 @@
 using Itadakimasu.API.Gateway.APIs.Products;
 using Itadakimasu.API.Gateway.APIs.ProductsSynchronization;
+using Itadakimasu.API.Gateway.Services;
 using Itadakimasu.API.Gateway.Services.Pagination;
 using Itadakimasu.API.Gateway.Types.Configs;
 
@@ -23,6 +24,7 @@ app.Run();
 static void RegisterStaffServices(WebApplicationBuilder builder)
 {
     builder.Services.AddSingleton<Paginator>();
+    builder.Services.AddSingleton<ProductsMapper>();
 }
 
 static void RegisterGraphQlTypes(WebApplicationBuilder builder)

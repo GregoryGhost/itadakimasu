@@ -3,6 +3,7 @@
 using HotChocolate.Subscriptions;
 
 using Itadakimasu.API.Gateway.DTOs.Products;
+using Itadakimasu.API.Gateway.Services;
 
 using JetBrains.Annotations;
 
@@ -14,20 +15,21 @@ using Merchandiser.V1;
 [PublicAPI]
 public class ProductsMutation
 {
-    // private readonly Merchandiser.MerchandiserClient _merchandiser;
+    private readonly Merchandiser.MerchandiserClient _merchandiser;
     
     private readonly ITopicEventSender _sender;
+
+    private readonly ProductsMapper _mapper;
     
     /// <summary>
     ///     Initialize dependencies.
     /// </summary>
     /// <param name="merchandiser">API products service.</param>
-    public ProductsMutation(
-        // Merchandiser.MerchandiserClient merchandiser, 
-        ITopicEventSender sender)
+    public ProductsMutation(Merchandiser.MerchandiserClient merchandiser, ITopicEventSender sender, ProductsMapper mapper)
     {
-        // _merchandiser = merchandiser;
+        _merchandiser = merchandiser;
         _sender = sender;
+        _mapper = mapper;
     }
 
     /// <summary>
@@ -52,88 +54,33 @@ public class ProductsMutation
         return createdProduct;
     }
     
-    // /// <summary>
-    // ///     Delete a product.
-    // /// </summary>
-    // /// <param name="dto">Deleting product.</param>
-    // /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-    // /// <returns>Returns deleted product.</returns>
-    // public async Task<DeletedProduct> DeleteProduct(DeletingProduct dto, CancellationToken cancellationToken)
-    // {
-    //     var request = ToDeleteProduct(dto);
-    //     var response = await _merchandiser.DeleteProductAsync(request, cancellationToken: cancellationToken);
-    //     var deletedProduct = ToDeletedProduct(dto);
-    //
-    //     return deletedProduct;
-    // }
-    //
-    // /// <summary>
-    // ///     Update a product.
-    // /// </summary>
-    // /// <param name="dto">Updating product.</param>
-    // /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
-    // /// <returns>Returns updated product.</returns>
-    // public async Task<UpdatedProduct> UpdateProduct(UpdatingProduct dto, CancellationToken cancellationToken)
-    // {
-    //     var request = ToUpdateProduct(dto);
-    //     var updated = await _merchandiser.UpdateProductAsync(request, cancellationToken: cancellationToken);
-    //     var updatedProduct = ToUpdatedProduct(updated);
-    //
-    //     return updatedProduct;
-    // }
-
-    private static CreatedProductDto ToCreatedProduct(ProductDto created)
+    /// <summary>
+    ///     Delete a product.
+    /// </summary>
+    /// <param name="dto">Deleting product.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns deleted product.</returns>
+    public async Task<DeletedProduct> DeleteProduct(DeletingProduct dto, CancellationToken cancellationToken)
     {
-        return new CreatedProductDto
-        {
-            Id = created.Id,
-            Name = created.Name,
-            Price = created.Price
-        };
+        var request = _mapper.ToDeleteProduct(dto);
+        var response = await _merchandiser.DeleteProductAsync(request, cancellationToken: cancellationToken);
+        var deletedProduct = _mapper.ToDeletedProduct(dto);
+    
+        return deletedProduct;
     }
-
-    private static NewProductDto ToCreateProduct(CreatingProductDto dto)
+    
+    /// <summary>
+    ///     Update a product.
+    /// </summary>
+    /// <param name="dto">Updating product.</param>
+    /// <param name="cancellationToken">Propagates notification that operations should be canceled.</param>
+    /// <returns>Returns updated product.</returns>
+    public async Task<UpdatedProduct> UpdateProduct(UpdatingProduct dto, CancellationToken cancellationToken)
     {
-        return new NewProductDto
-        {
-            Name = dto.Name,
-            Price = dto.Price
-        };
-    }
-
-    private static DeletedProduct ToDeletedProduct(ProductInfoId dto)
-    {
-        return new DeletedProduct
-        {
-            Id = dto.Id
-        };
-    }
-
-    private static ProductId ToDeleteProduct(ProductInfoId productInfoId)
-    {
-        return new ProductId
-        {
-            Id = productInfoId.Id
-        };
-    }
-
-    private static UpdatedProduct ToUpdatedProduct(ProductDto updated)
-    {
-        return new UpdatedProduct
-        {
-            Id = updated.Id,
-            Name = updated.Name,
-            Price = updated.Price
-        };
-    }
-
-    private static ProductDto ToUpdateProduct(UpdatingProduct dto)
-    {
-        return new ProductDto
-        {
-            Id = dto.Id,
-            Name = dto.Name,
-            Price = dto.Price
-        };
+        var request = _mapper.ToUpdateProduct(dto);
+        var updated = await _merchandiser.UpdateProductAsync(request, cancellationToken: cancellationToken);
+        var updatedProduct = _mapper.ToUpdatedProduct(updated);
+    
+        return updatedProduct;
     }
 }

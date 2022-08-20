@@ -1,7 +1,12 @@
 ﻿namespace Itadakimasu.API.Gateway.Services.Pagination;
 
+using HotChocolate.Types.Pagination;
+
+using JetBrains.Annotations;
+
 using PaginationOptions;
 
+[UsedImplicitly]
 public class Paginator
 {
     public  (bool HasNextPage, bool HasPrevPage) CheckPages(PageInfo pageInfo)
@@ -17,25 +22,25 @@ public class Paginator
         return pageInfo.Page == lastPage ? (false, true) : (true, true);
     }
 
-    public void Test()
+    public CollectionSegment<TData> GetPaginatedData<TData>(PaginatedData<TData> data)
     {
-        var (hasNextPage, hasPreviousPage) = _paginator.CheckPages(list.PageInfo);
+        var (hasNextPage, hasPreviousPage) = CheckPages(data.PageInfo);
         var pageInfo = new CollectionSegmentInfo(hasNextPage, hasPreviousPage);
-
-        var products = list.Products.Select(
-                               x => new ProductInfoDto
-                               {
-                                   Id = x.Id,
-                                   Name = x.Name,
-                                   Price = x.Price
-                               })
-                           .ToArray();
-        var totalCount = ValueTask.FromResult((int) list.PageInfo.TotalItems);
-        var collectionSegment = new CollectionSegment<ProductInfoDto>(
-            products,
+        
+        var totalCount = ValueTask.FromResult((int) data.PageInfo.TotalItems);
+        var collectionSegment = new CollectionSegment<TData>(
+            data.Items,
             pageInfo,
             _ => totalCount);
 
         return collectionSegment;
     }
+}
+
+[UsedImplicitly]
+public record PaginatedData<T>
+{
+    public IReadOnlyCollection<T> Items { get; init; } = null!;
+
+    public PageInfo PageInfo { get; init; } = null!;
 }
