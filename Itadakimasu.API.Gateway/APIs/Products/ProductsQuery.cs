@@ -61,19 +61,6 @@ public class ProductsQuery
         return collectionSegment;
     }
 
-    private static (bool HasNextPage, bool HasPrevPage) CheckPages(PageInfo pageInfo)
-    {
-        if (pageInfo.Page == 0)
-            return (true, false);
-
-        if (pageInfo.PageSize == pageInfo.TotalItems)
-            return (false, false);
-
-        var lastPage = pageInfo.TotalItems / pageInfo.PageSize;
-
-        return pageInfo.Page == lastPage ? (false, true) : (true, true);
-    }
-
     private static ProductCardDto GetProductCard(FoundProductDto product)
     {
         var isNotFoundProduct = product.KindCase == FoundProductDto.KindOneofCase.Null;
@@ -97,7 +84,7 @@ public class ProductsQuery
 
     private static CollectionSegment<ProductInfoDto> GetProductCollectionSegment(PaginatedProducts list)
     {
-        var (hasNextPage, hasPreviousPage) = CheckPages(list.PageInfo);
+        var (hasNextPage, hasPreviousPage) = _paginator.CheckPages(list.PageInfo);
         var pageInfo = new CollectionSegmentInfo(hasNextPage, hasPreviousPage);
 
         var products = list.Products.Select(

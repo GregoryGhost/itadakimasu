@@ -19,6 +19,9 @@ services:
       dockerfile: ./Itadakimasu.API.Gateway/Dockerfile
     environment:
       API_PRODUCTS_ADDRESS: ${API_PRODUCTS_ADDRESS}
+      RABBITMQ_ADDRESS: ${RABBITMQ_ADDRESS}
+      RABBITMQ_LOGIN: ${RABBITMQ_LOGIN}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
     ports:
       - "5243:80"
       - "5244:443"

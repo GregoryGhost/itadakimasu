@@ -8,7 +8,10 @@
       "applicationUrl": "https://localhost:7243;http://localhost:5243",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development",
-        "API_PRODUCTS_ADDRESS": "http://localhost:5220"
+        "API_PRODUCTS_ADDRESS": "http://localhost:5220",
+        "RABBITMQ_ADDRESS": "localhost",
+        "RABBITMQ_LOGIN": "guest",
+        "RABBITMQ_PASSWORD": "guest"
       }
     }
   }
