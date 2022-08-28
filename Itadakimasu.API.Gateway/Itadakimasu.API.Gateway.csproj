@@ -23,6 +23,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <ProjectReference Include="..\Itadakimasu.API.ProductsSynchronizationSaga.PublicDTOs\Itadakimasu.API.ProductsSynchronizationSaga.PublicDTOs.csproj" />
         <ProjectReference Include="..\Itadakimasu.Core.Protos\Itadakimasu.Core.Protos.csproj" />
     </ItemGroup>
 

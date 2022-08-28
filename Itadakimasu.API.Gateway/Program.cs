@@ -1,3 +1,5 @@
+using System.Reflection;
+
 using Itadakimasu.API.Gateway.APIs.Products;
 using Itadakimasu.API.Gateway.APIs.ProductsSynchronization;
 using Itadakimasu.API.Gateway.Services;
@@ -58,9 +60,12 @@ static void RegisterGrpcClients(WebApplicationBuilder builder)
 static void RegisterMassTransit(WebApplicationBuilder builder)
 {
     var rabbitMqConfig = ConfigHelper.GetRabbitMqConfig();
-    builder.Services.AddMassTransit(x =>
+    builder.Services.AddMassTransit(configurator =>
     {
-        x.UsingRabbitMq(
+        var entryAssembly = Assembly.GetEntryAssembly();
+        configurator.AddConsumers(entryAssembly);
+        
+        configurator.UsingRabbitMq(
             (context, cfg) =>
             {
                 cfg.Host(rabbitMqConfig.Address, "/", h =>

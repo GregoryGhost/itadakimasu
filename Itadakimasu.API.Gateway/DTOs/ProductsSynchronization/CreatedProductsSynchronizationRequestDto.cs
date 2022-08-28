@@ -5,4 +5,5 @@ using JetBrains.Annotations;
 [PublicAPI]
 public record CreatedProductsSynchronizationRequestDto
 {
+    
 }

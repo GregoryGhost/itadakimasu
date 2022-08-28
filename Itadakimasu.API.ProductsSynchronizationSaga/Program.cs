@@ -21,24 +21,24 @@ var builder = WebApplication.CreateBuilder(args);
 var rabbitMqConfig = ConfigHelper.GetRabbitMqConfig();
 
 builder.Services.AddMassTransit(
-    x =>
+    configurator =>
     {
-        x.AddDelayedMessageScheduler();
+        configurator.AddDelayedMessageScheduler();
 
-        x.SetKebabCaseEndpointNameFormatter();
+        configurator.SetKebabCaseEndpointNameFormatter();
 
         // By default, sagas are in-memory, but should be changed to a durable
         // saga repository.
-        x.SetInMemorySagaRepositoryProvider();
+        configurator.SetInMemorySagaRepositoryProvider();
 
         var entryAssembly = Assembly.GetEntryAssembly();
 
-        x.AddConsumers(entryAssembly);
-        x.AddSagaStateMachines(entryAssembly);
-        x.AddSagas(entryAssembly);
-        x.AddActivities(entryAssembly);
+        configurator.AddConsumers(entryAssembly);
+        configurator.AddSagaStateMachines(entryAssembly);
+        configurator.AddSagas(entryAssembly);
+        configurator.AddActivities(entryAssembly);
 
-        x.UsingRabbitMq(
+        configurator.UsingRabbitMq(
             (context, cfg) =>
             {
                 cfg.Host(rabbitMqConfig.Address, "/", h =>

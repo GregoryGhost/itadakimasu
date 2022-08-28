@@ -43,6 +43,7 @@ public class ProductsMutation
         // var request = ToCreateProduct(dto);
         // var created = await _merchandiser.CreateProductAsync(request, cancellationToken: cancellationToken);
         // var createdProduct = ToCreatedProduct(created);
+        //TODO: return code and remove ProductsSubscription.ProductAdded
         var createdProduct =  new CreatedProductDto
         {
             Id = 1,
