@@ -19,6 +19,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 var rabbitMqConfig = ConfigHelper.GetRabbitMqConfig();
+var isRunningInContainer = ConfigHelper.CheckRunningInContainer();
 
 builder.Services.AddMassTransit(
     configurator =>
@@ -41,11 +42,18 @@ builder.Services.AddMassTransit(
         configurator.UsingRabbitMq(
             (context, cfg) =>
             {
-                cfg.Host(rabbitMqConfig.Address, "/", h =>
+                if (isRunningInContainer)
                 {
-                    h.Username(rabbitMqConfig.Login);
-                    h.Password(rabbitMqConfig.Password);
-                });
+                    cfg.Host("rabbitmq");
+                }
+                else
+                {
+                    cfg.Host(rabbitMqConfig.Address, "/", h =>
+                    {
+                        h.Username(rabbitMqConfig.Login);
+                        h.Password(rabbitMqConfig.Password);
+                    });
+                }
 
                 cfg.UseDelayedMessageScheduler();
 

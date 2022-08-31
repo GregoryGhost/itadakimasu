@@ -24,4 +24,13 @@ public static class ConfigHelper
 
         return config;
     }
+    
+    public static bool CheckRunningInContainer()
+    {
+        const string EnvironmentParameter = "DOTNET_RUNNING_IN_CONTAINER";
+        var value = Environment.GetEnvironmentVariable(EnvironmentParameter);
+        var isRunningInContainer = !string.IsNullOrEmpty(value) && bool.Parse(value);
+        
+        return isRunningInContainer;
+    }
 }

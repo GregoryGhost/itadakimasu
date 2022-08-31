@@ -5,6 +5,7 @@ using Itadakimasu.API.Gateway.DTOs.ProductsSynchronization;
 using JetBrains.Annotations;
 
 [PublicAPI]
+[ExtendObjectType(Name = "Subscription")]
 public class ProductsSycnhronizationSubscription
 {
     [Subscribe]

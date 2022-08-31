@@ -12,6 +12,7 @@ using JetBrains.Annotations;
 using MassTransit;
 
 [PublicAPI]
+[ExtendObjectType(Name = "Query")]
 public class ProductsSynchronizationQuery
 {
     private readonly IBus _bus;
@@ -28,7 +29,7 @@ public class ProductsSynchronizationQuery
     }
 
     [UseOffsetPaging]
-    public async Task<CollectionSegment<ProductsSynchronizationRequestDto>> GetProductsSynchronizationRequests(
+    public async Task<CollectionSegment<ProductsSynhcronizationRequestDto>> GetProductsSynchronizationRequests(
         PaginationSettings? pagination, CancellationToken cancellationToken)
     {
         throw new NotImplementedException();

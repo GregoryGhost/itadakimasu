@@ -17,6 +17,7 @@ using PaginationOptions;
 ///     API products queries.
 /// </summary>
 [PublicAPI]
+[ExtendObjectType(Name = "Query")]
 public class ProductsQuery
 {
     private readonly Merchandiser.MerchandiserClient _merchandiser;
@@ -53,7 +54,7 @@ public class ProductsQuery
     /// </summary>
     /// <returns>Returns products.</returns>
     [UseOffsetPaging]
-    public async Task<CollectionSegment<ProductInfoDto>> GetProducts(PaginationSettings pagination, CancellationToken cancellationToken)
+    public async Task<CollectionSegment<ProductInfoDto>> GetProducts(PaginationSettings? pagination, CancellationToken cancellationToken)
     {
         var req = _mapper.GetProductListRequest(pagination);
         var list = await _merchandiser.ListProductsAsync(req, cancellationToken: cancellationToken);

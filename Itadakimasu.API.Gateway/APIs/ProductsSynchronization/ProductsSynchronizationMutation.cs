@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using MassTransit;
 
 [PublicAPI]
+[ExtendObjectType(Name = "Mutation")]
 public class ProductsSynchronizationMutation
 {
     public async Task<bool> CreateProductsSynchronizationRequest(CreatingSynchronizationRequestDto newRequestDto, [Service] IPublishEndpoint publishEndpoint, CancellationToken cancellationToken)

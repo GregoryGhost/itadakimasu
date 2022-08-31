@@ -14,7 +14,7 @@ public static class ConfigHelper
             ?? throw new ArgumentNullException($"Require to set parameter {RabbitMqLogin}");
         const string RabbitMqPassword = "RABBITMQ_PASSWORD";
         var password = Environment.GetEnvironmentVariable(RabbitMqPassword)
-            ?? throw new ArgumentNullException($"Require to set parameter {RabbitMqPassword}");;
+            ?? throw new ArgumentNullException($"Require to set parameter {RabbitMqPassword}");
         var config = new RabbitMqConfig
         {
             Address = rabbitmqAddress,
@@ -40,5 +40,15 @@ public static class ConfigHelper
         };
 
         return config;
+    }
+
+    //TODO: remove duplication
+    public static bool CheckRunningInContainer()
+    {
+        const string EnvironmentParameter = "DOTNET_RUNNING_IN_CONTAINER";
+        var value = Environment.GetEnvironmentVariable(EnvironmentParameter);
+        var isRunningInContainer = !string.IsNullOrEmpty(value) && bool.Parse(value);
+        
+        return isRunningInContainer;
     }
 }

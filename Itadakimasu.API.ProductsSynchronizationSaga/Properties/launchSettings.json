@@ -5,6 +5,7 @@
       "dotnetRunMessages": "true",
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
+        "DOTNET_RUNNING_IN_CONTAINER": "false",
         "RABBITMQ_ADDRESS": "",
         "RABBITMQ_LOGIN": "",
         "RABBITMQ_PASSWORD": "",

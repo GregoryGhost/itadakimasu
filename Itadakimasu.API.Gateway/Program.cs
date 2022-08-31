@@ -27,6 +27,7 @@ static void RegisterStaffServices(WebApplicationBuilder builder)
 {
     builder.Services.AddSingleton<Paginator>();
     builder.Services.AddSingleton<ProductsMapper>();
+    builder.Services.AddSingleton<ProductsSynchronizationMapper>();
 }
 
 static void RegisterGraphQlTypes(WebApplicationBuilder builder)
@@ -34,12 +35,18 @@ static void RegisterGraphQlTypes(WebApplicationBuilder builder)
     builder.Services
            .AddGraphQLServer()
            .AddInMemorySubscriptions()
-           .AddQueryType<ProductsQuery>()
-           .AddMutationType<ProductsMutation>()
-           .AddSubscriptionType<ProductsSubscription>()
-           .AddMutationType<ProductsSynchronizationMutation>()
-           .AddQueryType<ProductsSynchronizationQuery>()
-           .AddSubscriptionType<ProductsSycnhronizationSubscription>();
+           
+           .AddQueryType(t => t.Name("Query"))
+           .AddTypeExtension<ProductsQuery>()
+           .AddTypeExtension<ProductsSynchronizationQuery>()
+           
+           .AddMutationType(t => t.Name("Mutation"))
+           .AddTypeExtension<ProductsMutation>()
+           .AddTypeExtension<ProductsSynchronizationMutation>()
+           
+           .AddSubscriptionType(t => t.Name("Subscription"))
+           .AddTypeExtension<ProductsSubscription>()
+           .AddTypeExtension<ProductsSycnhronizationSubscription>();
 }
 
 static void RegisterGrpcClients(WebApplicationBuilder builder)
@@ -60,6 +67,8 @@ static void RegisterGrpcClients(WebApplicationBuilder builder)
 static void RegisterMassTransit(WebApplicationBuilder builder)
 {
     var rabbitMqConfig = ConfigHelper.GetRabbitMqConfig();
+    var isRunningInContainer = ConfigHelper.CheckRunningInContainer();
+    
     builder.Services.AddMassTransit(configurator =>
     {
         var entryAssembly = Assembly.GetEntryAssembly();
@@ -68,11 +77,18 @@ static void RegisterMassTransit(WebApplicationBuilder builder)
         configurator.UsingRabbitMq(
             (context, cfg) =>
             {
-                cfg.Host(rabbitMqConfig.Address, "/", h =>
+                if (isRunningInContainer)
                 {
-                    h.Username(rabbitMqConfig.Login);
-                    h.Password(rabbitMqConfig.Password);
-                });
+                    cfg.Host("rabbitmq");
+                }
+                else
+                {
+                    cfg.Host(rabbitMqConfig.Address, "/", h =>
+                    {
+                        h.Username(rabbitMqConfig.Login);
+                        h.Password(rabbitMqConfig.Password);
+                    });
+                }
 
                 cfg.UseDelayedMessageScheduler();
 

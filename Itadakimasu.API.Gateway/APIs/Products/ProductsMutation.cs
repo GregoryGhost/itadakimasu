@@ -13,6 +13,7 @@ using Merchandiser.V1;
 ///     API products mutation.
 /// </summary>
 [PublicAPI]
+[ExtendObjectType(Name = "Mutation")]
 public class ProductsMutation
 {
     private readonly Merchandiser.MerchandiserClient _merchandiser;

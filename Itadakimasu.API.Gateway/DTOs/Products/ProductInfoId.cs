@@ -3,5 +3,6 @@
 public record ProductInfoId
 {
     [GraphQLType(typeof(UnsignedLongType))]
+    [ID]
     public ulong Id { get; init; }
 }

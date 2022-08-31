@@ -3,6 +3,7 @@
 public record ProductCardDto
 {
     [GraphQLType(typeof(UnsignedLongType))]
+    [ID]
     public ulong Id { get; init; }
 
     public bool IsNotFound { get; init; }

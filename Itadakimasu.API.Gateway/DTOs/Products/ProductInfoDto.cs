@@ -3,6 +3,7 @@
 public record ProductInfoDto
 {
     [GraphQLType(typeof(UnsignedLongType))]
+    [ID]
     public ulong Id { get; init; }
 
     public string Name { get; init; } = null!;

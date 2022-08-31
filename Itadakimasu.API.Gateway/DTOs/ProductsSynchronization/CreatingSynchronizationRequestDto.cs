@@ -3,9 +3,6 @@
 using JetBrains.Annotations;
 
 [PublicAPI]
-public record CreatingSynchronizationRequestDto
+public record CreatingSynchronizationRequestDto: ProductsSynhcronizationRequestDto
 {
-    [GraphQLType(typeof(UnsignedLongType))]
-    [ID]
-    public ulong RestaurantId { get; init; }
 }
