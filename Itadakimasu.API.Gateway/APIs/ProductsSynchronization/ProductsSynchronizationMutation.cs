@@ -1,6 +1,7 @@
 ﻿namespace Itadakimasu.API.Gateway.APIs.ProductsSynchronization;
 
 using Itadakimasu.API.Gateway.DTOs.ProductsSynchronization;
+using Itadakimasu.API.ProductsSynchronizationSaga.PublicDTOs.DTOs;
 
 using JetBrains.Annotations;
 
@@ -12,7 +13,11 @@ public class ProductsSynchronizationMutation
 {
     public async Task<bool> CreateProductsSynchronizationRequest(CreatingSynchronizationRequestDto newRequestDto, [Service] IPublishEndpoint publishEndpoint, CancellationToken cancellationToken)
     {
-        await publishEndpoint.Publish(newRequestDto, cancellationToken);
+        var synchronizationRequest = new SynchronizeRestaurantProductsRequest
+        {
+            RestaurantId = newRequestDto.RestaurantId
+        };
+        await publishEndpoint.Publish(synchronizationRequest, cancellationToken);
 
         return true;
     }
