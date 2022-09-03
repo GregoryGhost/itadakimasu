@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 using Grpc.Net.Client;
 
+using Itadakimasu.API.ProductsSynchronizationSaga.Services;
 using Itadakimasu.API.ProductsSynchronizationSaga.Types.Configs;
 
 using Microsoft.Extensions.DependencyInjection;
@@ -17,6 +18,7 @@ using Microsoft.AspNetCore.Builder;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var microservicesConfig = ConfigHelper.GetMicroservicesConfig();
 
 var rabbitMqConfig = ConfigHelper.GetRabbitMqConfig();
 var isRunningInContainer = ConfigHelper.CheckRunningInContainer();
@@ -61,28 +63,23 @@ builder.Services.AddMassTransit(
             });
     });
 
-var microservicesConfig = ConfigHelper.GetMicroservicesConfig();
+builder.Services.AddGrpcClient<ProductsProxy.V1.ProductsProxy.ProductsProxyClient>(
+           options =>
+           {
+               options.Address = new Uri(microservicesConfig.ApiProductsAggregatorAddress);
+           })
+       .ConfigureChannel(
+           options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
 
-builder.Services.AddSingleton(
-    s =>
-    {
-        var channel = GrpcChannel.ForAddress(microservicesConfig.ApiProductsAggregatorAddress);
+builder.Services.AddGrpcClient<ProductsSyncer.V1.ProductsSyncer.ProductsSyncerClient>(
+           options =>
+           {
+               options.Address = new Uri(microservicesConfig.ApiProductsSynchronizerAddress);
+           })
+       .ConfigureChannel(
+           options => { options.UnsafeUseInsecureChannelCallCredentials = true; });
 
-        var client = new ProductsProxy.V1.ProductsProxy.ProductsProxyClient(channel);
-
-        return client;
-    });
-
-builder.Services.AddSingleton(
-    s =>
-    {
-        var channel = GrpcChannel.ForAddress(microservicesConfig.ApiProductsSynchronizerAddress);
-
-        var client = new ProductsSyncer.V1.ProductsSyncer.ProductsSyncerClient(channel);
-
-        return client;
-    });
-
+builder.Services.AddHostedService<ProductsAggregatorNotifier>();
 
 var app = builder.Build();
 

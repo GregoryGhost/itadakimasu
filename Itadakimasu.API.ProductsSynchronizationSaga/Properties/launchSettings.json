@@ -6,11 +6,11 @@
       "environmentVariables": {
         "DOTNET_ENVIRONMENT": "Development",
         "DOTNET_RUNNING_IN_CONTAINER": "false",
-        "RABBITMQ_ADDRESS": "",
-        "RABBITMQ_LOGIN": "",
-        "RABBITMQ_PASSWORD": "",
-        "API_PRODUCTS_AGGREGATOR_ADDRESS": "",
-        "API_PRODUCTS_SYNCHRONIZER_ADDRESS": ""
+        "RABBITMQ_ADDRESS": "localhost",
+        "RABBITMQ_LOGIN": "guest",
+        "RABBITMQ_PASSWORD": "guest",
+        "API_PRODUCTS_AGGREGATOR_ADDRESS": "http://localhost:5220",
+        "API_PRODUCTS_SYNCHRONIZER_ADDRESS": "http://localhost:5222"
       }
     }
   }

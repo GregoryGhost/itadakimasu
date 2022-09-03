@@ -10,6 +10,8 @@
         public Guid CorrelationId { get; set; }
         
         public ulong RestaurantId { get; set; }
+        
+        public ulong SynchronizationRestaurantRequestId { get; set; }
 
         public string? CurrentState { get; set; } = null!;
         public Guid? RequestId { get; set; }

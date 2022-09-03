@@ -3,8 +3,11 @@
 using Itadakimasu.API.ProductsAggregator.Models;
 using Itadakimasu.ProductsAggregator.DAL;
 
+using JetBrains.Annotations;
+
 using ProductScrapper.Contracts;
 
+[UsedImplicitly]
 public class ProductsLoopScrapper : IHostedService
 {
     private readonly ILogger<ProductsLoopScrapper> _logger;

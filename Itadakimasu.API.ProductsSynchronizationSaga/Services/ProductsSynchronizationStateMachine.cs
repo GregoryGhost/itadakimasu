@@ -1,8 +1,11 @@
 ﻿namespace Itadakimasu.API.ProductsSynchronizationSaga.Services
 {
     using System;
+    using System.Diagnostics;
     using System.Linq;
     using System.Threading.Tasks;
+
+    using Google.Protobuf.WellKnownTypes;
 
     using Itadakimasu.API.ProductsSynchronizationSaga.PublicDTOs.DTOs;
     using Itadakimasu.API.ProductsSynchronizationSaga.Types.Saga;
@@ -39,10 +42,8 @@
                 () => GetSynchronizedRestaurant,
                 x =>
                     x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
-            Event(
-                () => SynchronizeRestaurant,
-                x =>
-                    x.CorrelateBy((instance, context) => instance.RestaurantId == context.Message.RequestId));
+            Request(() => SynchronizeRestaurantRequest);
+            Request(() => CreateSynchronizationRequest);
 
             Initially(
 
@@ -53,22 +54,52 @@
                             if (!x.TryGetPayload(out SagaConsumeContext<ProductsSynchronizationSagaState, SynchronizeRestaurantProductsRequest>? payload))
                                 throw new Exception("Unable to retrieve required payload for callback data.");
 
-                            x.Saga.RequestId = payload?.RequestId;
+                            Debug.Assert(payload != null, nameof(payload) + " != null");
+                            
+                            x.Saga.RequestId = payload.RequestId;
+                            x.Saga.ResponseAddress = payload.ResponseAddress;
+                            x.Saga.RestaurantId = payload.Message.RestaurantId;
+                        })
+                    .Request(CreateSynchronizationRequest,
+                        x =>
+                        {
+                            var data = new SynchronizationRestaurantRequest
+                            {
+                                RestaurantId = x.Saga.RestaurantId
+                            };
+                            
+                            return x.Init<SynchronizationRestaurantRequest>(data);
+                        })
+                    .TransitionTo(CreateSynchronizationRequest.Pending)
+            );
+            
+            During(
+                CreateSynchronizationRequest.Pending,
+                When(CreateSynchronizationRequest.Completed)
+                    .Then(
+                        x =>
+                        {
+                            x.Saga.SynchronizationRestaurantRequestId = x.Message.RequestId;
                         })
                     .TransitionTo(CreatedScrappingRestaurantProductsRequest)
-            );
+                );
 
             During(
                 CreatedScrappingRestaurantProductsRequest,
                 When(ScrappedRestaurantProducts)
+                    .Request(SynchronizeRestaurantRequest,
+                        x =>
+                        {
+                            var data = new SynchronizingData
+                            {
+                                RequestId = x.Saga.SynchronizationRestaurantRequestId
+                            };
+                            
+                            return x.Init<SynchronizingData>(data);
+                        })
                     .TransitionTo(SynchronizingRestaurant)
             );
-            
-            During(
-                SynchronizingRestaurant,
-                When(SynchronizeRestaurant)
-                    .TransitionTo(SynchronizingRestaurant));
-            
+
             During(
                 SynchronizingRestaurant,
                 When(GetSynchronizedRestaurant)
@@ -97,7 +128,10 @@
 
         public Event<SynchronizedData> GetSynchronizedRestaurant { get; init; } = null!;
 
-        public Event<SynchronizingData> SynchronizeRestaurant { get; init; } = null!;
+        public Request<ProductsSynchronizationSagaState, SynchronizingData, Empty> SynchronizeRestaurantRequest { get; init; } = null!;
+        
+        public Request<ProductsSynchronizationSagaState, SynchronizationRestaurantRequest,
+            CreatedSynchronizationRestaurantRequest> CreateSynchronizationRequest { get; init; } = null!;
 
         private static async Task RespondFromSagaAsync(SagaConsumeContext<ProductsSynchronizationSagaState> context, string error)
         {
